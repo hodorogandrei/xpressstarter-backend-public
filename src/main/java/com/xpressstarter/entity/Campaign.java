@@ -16,6 +16,11 @@ public class Campaign {
 	private Integer current;
 	private LocalDateTime startedOn;
 	private LocalDateTime expiresOn;
+	
+	public Campaign(){
+		
+	}
+	
 	public String getId() {
 		return id;
 	}

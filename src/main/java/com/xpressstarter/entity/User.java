@@ -18,6 +18,10 @@ public class User {
 	private Boolean wantsToReceiveEmail;
 	private LocalDateTime memberSince;
 	private Role role;
+	
+	public User(){
+		
+	}
 	public String getId() {
 		return id;
 	}

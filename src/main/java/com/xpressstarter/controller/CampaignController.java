@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.xpressstarter.entity.Campaign;
 import com.xpressstarter.entity.User;
 import com.xpressstarter.repository.CampaignRepository;
-import com.xpressstarter.repository.LikeRepository;
 import com.xpressstarter.role.Role;
 
 @RestController
@@ -22,11 +22,10 @@ public class CampaignController {
 	
 	@Autowired
 	private CampaignRepository cRep;
-	@Autowired
-	private LikeRepository lRep;
+	
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public Campaign getCampaign(@RequestParam("id") String id){
+	public Campaign getCampaign(@PathVariable("id") String id){
 		return cRep.findOne(id);
 		}
 	

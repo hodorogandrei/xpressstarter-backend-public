@@ -12,6 +12,10 @@ public class Like {
 	private User user;
 	private Campaign campaign;
 	private LocalDateTime givenOn;
+	
+	public Like(){
+		
+	}
 	public User getUser() {
 		return user;
 	}
