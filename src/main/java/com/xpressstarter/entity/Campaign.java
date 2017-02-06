@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 
+import com.xpressstarter.campaign.category.CampaignCategory;
+
 
 public class Campaign {
 
@@ -16,6 +18,7 @@ public class Campaign {
 	private Integer current;
 	private LocalDateTime startedOn;
 	private LocalDateTime expiresOn;
+	private CampaignCategory category;
 	
 	public Campaign(){
 		
@@ -68,6 +71,14 @@ public class Campaign {
 	}
 	public void setExpiresOn(LocalDateTime expiresOn) {
 		this.expiresOn = expiresOn;
+	}
+
+	public CampaignCategory getCategory() {
+		return category;
+	}
+
+	public void setCategory(CampaignCategory category) {
+		this.category = category;
 	}
 	
 	
