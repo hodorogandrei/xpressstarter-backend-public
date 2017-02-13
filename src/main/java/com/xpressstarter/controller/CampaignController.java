@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.xpressstarter.campaign.category.CampaignCategory;
 import com.xpressstarter.entity.Campaign;
 import com.xpressstarter.exceptions.CampaignAlreadyExistsException;
 import com.xpressstarter.exceptions.CampaignDoesNotExistException;
 import com.xpressstarter.service.CampaignService;
+import com.xpressstarter.util.CampaignCategory;
 
 @RestController
 @RequestMapping("/api/v1/campaign/")

@@ -5,16 +5,20 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 
+import com.xpressstarter.util.DonationStatus;
+
 public class Donation {
 
 	@Id
 	private String id;
 	@Indexed
 	private String userId;
-	private float amount;
+	private Double amount;
 	private LocalDateTime donatedOn;
 	@Indexed
 	private String campaignId;
+	private DonationStatus status;
+	
 	public String getId() {
 		return id;
 	}
@@ -27,10 +31,10 @@ public class Donation {
 	public void setBenefactor(String userId) {
 		this.userId = userId;
 	}
-	public float getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
-	public void setAmount(float amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 	public LocalDateTime getDonatedOn() {
@@ -45,6 +49,16 @@ public class Donation {
 	public void setCampaign(String campaignId) {
 		this.campaignId = campaignId;
 	}
-	
-	
+	public DonationStatus getStatus(){
+		return status;
+	}
+	public void setStatusPending(){
+		status=DonationStatus.PENDING;
+	}
+	public void setStatusOK(){
+		status=DonationStatus.OK;
+	}
+	public void setStatusRevoked(){
+		status=DonationStatus.REVOKED;
+	}
 }

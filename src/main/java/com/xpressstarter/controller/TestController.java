@@ -11,7 +11,7 @@ import com.xpressstarter.entity.Campaign;
 import com.xpressstarter.entity.User;
 import com.xpressstarter.repository.CampaignRepository;
 import com.xpressstarter.repository.UserRepository;
-import com.xpressstarter.role.Role;
+import com.xpressstarter.util.Role;
 
 @RestController
 @RequestMapping("/api/v1/test")
@@ -39,12 +39,12 @@ public class TestController {
 		for (int i=0;i<10;i++){
 			Campaign c = new Campaign();
 			c.setBeneficiaryId(u.getId());
-			c.setCurrent(i*100+1000);
+			c.setCurrent(i*100.00+1000.20);
 			c.setDescription("This is a "+i+" test campaign to test the api");
 			c.setExpiresOn(LocalDateTime.now());
 			c.setStartedOn(LocalDateTime.now());
 			c.setName("Test Campaign "+i);
-			c.setTarget(i*100+2000);
+			c.setTarget(i*100+2000.00);
 			
 			cRep.save(c);
 			

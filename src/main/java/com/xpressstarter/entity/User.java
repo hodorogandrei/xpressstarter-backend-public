@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 
-import com.xpressstarter.role.Role;
+import com.xpressstarter.util.Role;
 
 
 public class User {

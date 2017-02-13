@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
 
-import com.xpressstarter.campaign.category.CampaignCategory;
+import com.xpressstarter.util.CampaignCategory;
 
 
 public class Campaign {
@@ -18,8 +18,8 @@ public class Campaign {
 	@TextIndexed
 	private String Description;
 	private String beneficiaryId;
-	private Integer target;
-	private Integer current;
+	private Double target;
+	private Double current;
 	private LocalDateTime startedOn;
 	private LocalDateTime expiresOn;
 	private CampaignCategory category;
@@ -57,16 +57,16 @@ public class Campaign {
 		this.beneficiaryId = beneficiaryId;
 	}
 
-	public Integer getTarget() {
+	public Double getTarget() {
 		return target;
 	}
-	public void setTarget(Integer target) {
+	public void setTarget(Double target) {
 		this.target = target;
 	}
-	public Integer getCurrent() {
+	public Double getCurrent() {
 		return current;
 	}
-	public void setCurrent(Integer current) {
+	public void setCurrent(Double current) {
 		this.current = current;
 	}
 	public LocalDateTime getStartedOn() {

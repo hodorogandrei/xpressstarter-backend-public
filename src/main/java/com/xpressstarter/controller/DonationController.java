@@ -11,45 +11,42 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xpressstarter.entity.Donation;
-import com.xpressstarter.repository.DonationRepository;
+import com.xpressstarter.service.DonationService;
 
 @RestController
 @RequestMapping("/api/v1/donation/")
 public class DonationController {
 	@Autowired
-	private DonationRepository dRep;
+	private DonationService dServ;
 	
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public Donation getDonation(@PathVariable("id") String id){
-		return dRep.findOne(id);
+		return dServ.getDonationById(id);
 		}
 	
 	@RequestMapping(value="/user/{benefactor}", method=RequestMethod.GET)
 	public List<Donation> getDonationByUser(@PathVariable("benefactor") String benefactorId){
-		return dRep.findByUserId(benefactorId);
+		return dServ.getDonationsByUser(benefactorId);
 		}
 	
 	@RequestMapping(value="/campaign/{campaign}", method=RequestMethod.GET)
 	public List<Donation> getDonationByCampaign(@PathVariable("campaign") String campaignId){
-		return dRep.findByCampaignId(campaignId);
+		return dServ.getDonationsByCampaign(campaignId);
 		}
 	
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public List<Donation> getDonations(){
-		return dRep.findAll();
+		return dServ.getAllDonations();
 		}
 	
 	@RequestMapping(value="/", method=RequestMethod.POST)
 	public void addDonation(@RequestBody Donation donation){
-		dRep.save(donation);
+		dServ.addDonation(donation);
 	}
-	@RequestMapping(value="/", method=RequestMethod.PUT)
-	public void editDonation(@RequestBody Donation donation){
-		dRep.save(donation);
-	}
+	
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public void DeleteDonation(@RequestParam("id") String id){
-		dRep.delete(id);;
+		dServ.revokeDonation(id);
 	}
 }

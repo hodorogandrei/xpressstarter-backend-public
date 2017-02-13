@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.xpressstarter.campaign.category.CampaignCategory;
 import com.xpressstarter.entity.Campaign;
+import com.xpressstarter.util.CampaignCategory;
 
 public interface CampaignRepository extends MongoRepository<Campaign, String> {
 

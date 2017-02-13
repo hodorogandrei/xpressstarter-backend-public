@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.xpressstarter.campaign.category.CampaignCategory;
 import com.xpressstarter.entity.Campaign;
 import com.xpressstarter.exceptions.CampaignAlreadyExistsException;
 import com.xpressstarter.exceptions.CampaignDoesNotExistException;
 import com.xpressstarter.repository.CampaignRepository;
+import com.xpressstarter.util.CampaignCategory;
 
 @Service
 public class CampaignService {
