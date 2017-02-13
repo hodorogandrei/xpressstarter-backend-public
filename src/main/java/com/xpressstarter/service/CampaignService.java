@@ -19,7 +19,7 @@ public class CampaignService {
 	
 	public void addCampaign(Campaign newCampaign) throws CampaignAlreadyExistsException{
 		Campaign campaign=cRep.findByName(newCampaign.getName());
-		if (campaign!=null){
+		if (campaign==null){
 			cRep.save(newCampaign);
 		} else{
 			throw new CampaignAlreadyExistsException();

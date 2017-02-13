@@ -19,24 +19,31 @@ public class Like {
 	public Like(){
 		
 	}
-	public String getUser() {
-		return userId;
-	}
-	public void setUser(String userId) {
-		this.userId = userId;
-	}
-	public String getCampaign() {
-		return campaignId;
-	}
-	public void setCampaign(String campaignId) {
-		this.campaignId = campaignId;
-	}
 	public LocalDateTime getGivenOn() {
 		return givenOn;
 	}
 	public void setGivenOn(LocalDateTime givenOn) {
 		this.givenOn = givenOn;
 	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getCampaignId() {
+		return campaignId;
+	}
+	public void setCampaignId(String campaignId) {
+		this.campaignId = campaignId;
+	}
+	
 	
 	
 }
