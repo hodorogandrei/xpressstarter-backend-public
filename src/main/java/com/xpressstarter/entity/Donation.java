@@ -3,14 +3,17 @@ package com.xpressstarter.entity;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 public class Donation {
 
 	@Id
 	private String id;
+	@Indexed
 	private String userId;
 	private float amount;
 	private LocalDateTime donatedOn;
+	@Indexed
 	private String campaignId;
 	public String getId() {
 		return id;

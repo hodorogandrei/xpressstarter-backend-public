@@ -3,6 +3,7 @@ package com.xpressstarter.entity;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import com.xpressstarter.role.Role;
 
@@ -11,8 +12,11 @@ public class User {
 
 	@Id
 	private String id;
+	@Indexed
 	private String firstname;
+	@Indexed
 	private String lastname;
+	@Indexed
 	private String email;
 	private String passwordHash;
 	private Boolean wantsToReceiveEmail;

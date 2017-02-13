@@ -3,6 +3,8 @@ package com.xpressstarter.entity;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 
 import com.xpressstarter.campaign.category.CampaignCategory;
 
@@ -11,7 +13,9 @@ public class Campaign {
 
 	@Id
 	private String id;
+	@Indexed
 	private String Name;
+	@TextIndexed
 	private String Description;
 	private String beneficiaryId;
 	private Integer target;

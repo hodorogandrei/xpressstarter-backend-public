@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.xpressstarter.campaign.category.CampaignCategory;
 import com.xpressstarter.entity.Campaign;
 import com.xpressstarter.exceptions.CampaignAlreadyExistsException;
+import com.xpressstarter.exceptions.CampaignDoesNotExistException;
 import com.xpressstarter.service.CampaignService;
 
 @RestController
@@ -47,8 +48,14 @@ public class CampaignController {
 		}
 	}
 	@RequestMapping(value="/", method=RequestMethod.PUT)
-	public void editCampaing(@RequestBody Campaign campaign){
-		cServ.editCampaign(campaign);
+	public ResponseEntity<String> editCampaing(@RequestBody Campaign campaign){
+		try {
+			cServ.editCampaign(campaign);
+			return ResponseEntity.status(HttpStatus.OK).body("Campaign Edited!");
+		} catch (CampaignDoesNotExistException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Campaign does not exists !");
+			
+		}
 	}
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public void DeleteCampaing(@RequestParam("id") String id){

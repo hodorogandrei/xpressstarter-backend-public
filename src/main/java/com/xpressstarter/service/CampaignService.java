@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.xpressstarter.campaign.category.CampaignCategory;
 import com.xpressstarter.entity.Campaign;
 import com.xpressstarter.exceptions.CampaignAlreadyExistsException;
+import com.xpressstarter.exceptions.CampaignDoesNotExistException;
 import com.xpressstarter.repository.CampaignRepository;
 
 @Service
@@ -25,8 +26,13 @@ public class CampaignService {
 		}
 	}
 	
-	public void editCampaign(Campaign campaign){
-		cRep.save(campaign);
+	public void editCampaign(Campaign campaign) throws CampaignDoesNotExistException{
+		Campaign c = cRep.findOne(campaign.getId());
+		if (c!=null){
+			cRep.save(campaign);
+		} else {
+			throw new CampaignDoesNotExistException();
+		}
 	}
 	
 	public Campaign getCampaign(String id){
