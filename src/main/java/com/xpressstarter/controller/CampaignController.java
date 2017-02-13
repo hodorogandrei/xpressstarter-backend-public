@@ -5,6 +5,8 @@ import java.util.List;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xpressstarter.campaign.category.CampaignCategory;
 import com.xpressstarter.entity.Campaign;
-import com.xpressstarter.entity.User;
+import com.xpressstarter.exceptions.CampaignAlreadyExistsException;
 import com.xpressstarter.service.CampaignService;
 
 @RestController
@@ -36,8 +38,13 @@ public class CampaignController {
 		}
 	
 	@RequestMapping(value="/", method=RequestMethod.POST)
-	public void addCampaing(@RequestBody Campaign campaign){
-		cServ.addCampaign(campaign);
+	public ResponseEntity<String> addCampaing(@RequestBody Campaign campaign){
+		try{
+			cServ.addCampaign(campaign);
+			return ResponseEntity.status(HttpStatus.OK).body("Campaign Added!");
+		} catch (CampaignAlreadyExistsException ex){
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Campaign exists already!");
+		}
 	}
 	@RequestMapping(value="/", method=RequestMethod.PUT)
 	public void editCampaing(@RequestBody Campaign campaign){
@@ -64,9 +71,9 @@ public class CampaignController {
 		return cServ.getCampaignsByCategory(category);
 	}
 	
-	@RequestMapping(value="/user", method=RequestMethod.GET)
-	public List<Campaign> getCampaignsByBeneficiary(@RequestBody User user){
-		return cServ.getCampaignsByBeneficiary(user);
+	@RequestMapping(value="/user/{id}", method=RequestMethod.GET)
+	public List<Campaign> getCampaignsByBeneficiary(@PathParam("id") String userId){
+		return cServ.getCampaignsByBeneficiary(userId);
 	}
 	
 	

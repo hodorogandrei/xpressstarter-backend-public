@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.xpressstarter.entity.Campaign;
 import com.xpressstarter.entity.Like;
-import com.xpressstarter.entity.User;
 import com.xpressstarter.repository.LikeRepository;
 
 @RestController
@@ -28,13 +26,13 @@ public class LikeController {
 		}
 	
 	@RequestMapping(value="/user/{like}", method=RequestMethod.GET)
-	public List<Like> getLikesByUser(@PathVariable("like") User user){
-		return lRep.findByUser(user);
+	public List<Like> getLikesByUser(@PathVariable("like") String userId){
+		return lRep.findByUserId(userId);
 		}
 	
 	@RequestMapping(value="/campaign/{campaign}", method=RequestMethod.GET)
-	public List<Like> getLikesByCampaign(@PathVariable("campaign") Campaign campaign){
-		return lRep.findByCampaign(campaign);
+	public List<Like> getLikesByCampaign(@PathVariable("campaign") String campaignId){
+		return lRep.findByCampaignId(campaignId);
 		}
 	
 	@RequestMapping(value="/", method=RequestMethod.GET)

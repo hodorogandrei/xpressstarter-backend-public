@@ -13,13 +13,15 @@ public class Campaign {
 	private String id;
 	private String Name;
 	private String Description;
-	private User beneficiary;
+	private String beneficiaryId;
 	private Integer target;
 	private Integer current;
 	private LocalDateTime startedOn;
 	private LocalDateTime expiresOn;
 	private CampaignCategory category;
-	
+	private Boolean isActive;
+	private Boolean isApproved;
+	private String approvedBy;
 	public Campaign(){
 		
 	}
@@ -42,12 +44,15 @@ public class Campaign {
 	public void setDescription(String description) {
 		Description = description;
 	}
-	public User getBeneficiary() {
-		return beneficiary;
+	
+	public String getBeneficiaryId() {
+		return beneficiaryId;
 	}
-	public void setBeneficiary(User beneficiary) {
-		this.beneficiary = beneficiary;
+
+	public void setBeneficiaryId(String beneficiaryId) {
+		this.beneficiaryId = beneficiaryId;
 	}
+
 	public Integer getTarget() {
 		return target;
 	}
@@ -79,6 +84,30 @@ public class Campaign {
 
 	public void setCategory(CampaignCategory category) {
 		this.category = category;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public Boolean getIsApproved() {
+		return isApproved;
+	}
+
+	public void setIsApproved(Boolean isApproved) {
+		this.isApproved = isApproved;
+	}
+
+	public String getApprovedBy() {
+		return approvedBy;
+	}
+
+	public void setApprovedBy(String approvedBy) {
+		this.approvedBy = approvedBy;
 	}
 	
 	

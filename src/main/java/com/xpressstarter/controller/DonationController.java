@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.xpressstarter.entity.Campaign;
 import com.xpressstarter.entity.Donation;
-import com.xpressstarter.entity.User;
 import com.xpressstarter.repository.DonationRepository;
 
 @RestController
@@ -28,13 +26,13 @@ public class DonationController {
 		}
 	
 	@RequestMapping(value="/user/{benefactor}", method=RequestMethod.GET)
-	public List<Donation> getDonationByUser(@PathVariable("benefactor") User benefactor){
-		return dRep.findByBenefactor(benefactor);
+	public List<Donation> getDonationByUser(@PathVariable("benefactor") String benefactorId){
+		return dRep.findByUserId(benefactorId);
 		}
 	
 	@RequestMapping(value="/campaign/{campaign}", method=RequestMethod.GET)
-	public List<Donation> getDonationByCampaign(@PathVariable("campaign") Campaign campaign){
-		return dRep.findByCampaign(campaign);
+	public List<Donation> getDonationByCampaign(@PathVariable("campaign") String campaignId){
+		return dRep.findByCampaignId(campaignId);
 		}
 	
 	@RequestMapping(value="/", method=RequestMethod.GET)

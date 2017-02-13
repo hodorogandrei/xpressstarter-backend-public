@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.xpressstarter.campaign.category.CampaignCategory;
 import com.xpressstarter.entity.Campaign;
-import com.xpressstarter.entity.User;
+import com.xpressstarter.exceptions.CampaignAlreadyExistsException;
 import com.xpressstarter.repository.CampaignRepository;
 
 @Service
@@ -16,8 +16,13 @@ public class CampaignService {
 	@Autowired
 	private CampaignRepository cRep;
 	
-	public void addCampaign(Campaign campaign){
-		cRep.save(campaign);
+	public void addCampaign(Campaign newCampaign) throws CampaignAlreadyExistsException{
+		Campaign campaign=cRep.findByName(newCampaign.getName());
+		if (campaign!=null){
+			cRep.save(newCampaign);
+		} else{
+			throw new CampaignAlreadyExistsException();
+		}
 	}
 	
 	public void editCampaign(Campaign campaign){
@@ -36,8 +41,8 @@ public class CampaignService {
 		return cRep.findByNameLikeOrDescriptionLikeAllIgnoreCase(keyword.toLowerCase());
 	}
 	
-	public List<Campaign> getCampaignsByBeneficiary(User user){
-		return cRep.findByBeneficiary(user);
+	public List<Campaign> getCampaignsByBeneficiary(String beneficiaryId){
+		return cRep.findByBeneficiaryId(beneficiaryId);
 	}
 	
 	public List<Campaign> getCampaignsByCategory(CampaignCategory category){
@@ -45,6 +50,8 @@ public class CampaignService {
 	}
 	
 	public void deleteCampaign(String id){
-		cRep.delete(id);
+		Campaign campaign = cRep.findOne(id);
+		campaign.setIsActive(false);
+		cRep.save(campaign);
 	}
 }

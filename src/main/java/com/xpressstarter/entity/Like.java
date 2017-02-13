@@ -9,24 +9,24 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Like {
 	@Id
 	private String id;
-	private User user;
-	private Campaign campaign;
+	private String userId;
+	private String campaignId;
 	private LocalDateTime givenOn;
 	
 	public Like(){
 		
 	}
-	public User getUser() {
-		return user;
+	public String getUser() {
+		return userId;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setUser(String userId) {
+		this.userId = userId;
 	}
-	public Campaign getCampaign() {
-		return campaign;
+	public String getCampaign() {
+		return campaignId;
 	}
-	public void setCampaign(Campaign campaign) {
-		this.campaign = campaign;
+	public void setCampaign(String campaignId) {
+		this.campaignId = campaignId;
 	}
 	public LocalDateTime getGivenOn() {
 		return givenOn;
