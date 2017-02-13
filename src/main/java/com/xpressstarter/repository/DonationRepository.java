@@ -9,4 +9,5 @@ import com.xpressstarter.entity.Donation;
 public interface DonationRepository extends MongoRepository<Donation,String> {
 	public List<Donation> findByCampaignId(String campaignId);
 	public List<Donation> findByUserId(String userId);
+	public Donation findByUserIdAndCampaignId(String userId, String campaignId);
 }

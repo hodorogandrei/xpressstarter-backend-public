@@ -20,7 +20,7 @@ public class LikeService {
 	}
 	
 	public void addLike(Like like) throws AlreadyLikedCampaignException{
-		if (lRep.findOne(like.getId()) == null) {
+		if (lRep.findByUserIdAndCampaignId(like.getUserId(), like.getCampaignId()) == null) {
 			lRep.save(like);
 		} else {
 			throw new AlreadyLikedCampaignException();
