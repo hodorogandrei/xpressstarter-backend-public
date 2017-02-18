@@ -1,7 +1,5 @@
 package com.xpressstarter.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +7,6 @@ import com.xpressstarter.entity.Campaign;
 import com.xpressstarter.exceptions.CampaignAlreadyExistsException;
 import com.xpressstarter.exceptions.CampaignDoesNotExistException;
 import com.xpressstarter.repository.CampaignRepository;
-import com.xpressstarter.util.CampaignCategory;
 
 @Service
 public class CampaignService {
@@ -37,22 +34,6 @@ public class CampaignService {
 	
 	public Campaign getCampaign(String id){
 		return cRep.findOne(id);
-	}
-	
-	public List<Campaign> getAllCampaigns(){
-		return cRep.findAll();
-	}
-	
-	public List<Campaign> getCampaignsLike(String keyword){
-		return cRep.findByNameLikeOrDescriptionLikeAllIgnoreCase(keyword.toLowerCase());
-	}
-	
-	public List<Campaign> getCampaignsByBeneficiary(String beneficiaryId){
-		return cRep.findByBeneficiaryId(beneficiaryId);
-	}
-	
-	public List<Campaign> getCampaignsByCategory(CampaignCategory category){
-		return cRep.findByCategory(category);
 	}
 	
 	public void deleteCampaign(String id){
