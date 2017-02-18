@@ -30,6 +30,22 @@ public class Campaign {
 		
 	}
 	
+	
+	public Campaign(String name, String description, String beneficiaryId, Double target, Double current,
+			LocalDateTime startedOn, LocalDateTime expiresOn, CampaignCategory category, Boolean isActive) {
+		super();
+		Name = name;
+		Description = description;
+		this.beneficiaryId = beneficiaryId;
+		this.target = target;
+		this.current = current;
+		this.startedOn = startedOn;
+		this.expiresOn = expiresOn;
+		this.category = category;
+		this.isActive = isActive;
+	}
+
+
 	public String getId() {
 		return id;
 	}

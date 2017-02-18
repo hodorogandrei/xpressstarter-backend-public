@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xpressstarter.util.Role;
 
 
@@ -18,6 +19,7 @@ public class User {
 	private String lastname;
 	@Indexed
 	private String email;
+	@JsonIgnore
 	private String passwordHash;
 	private Boolean wantsToReceiveEmail;
 	private LocalDateTime memberSince;
@@ -26,6 +28,19 @@ public class User {
 	public User(){
 		
 	}
+	
+	public User(String firstname, String lastname, String email, String passwordHash, Boolean wantsToReceiveEmail,
+			LocalDateTime memberSince, Role role) {
+		super();
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.email = email;
+		this.passwordHash = passwordHash;
+		this.wantsToReceiveEmail = wantsToReceiveEmail;
+		this.memberSince = memberSince;
+		this.role = role;
+	}
+
 	public String getId() {
 		return id;
 	}
