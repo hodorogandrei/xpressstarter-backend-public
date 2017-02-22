@@ -10,10 +10,13 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import com.xpressstarter.entity.Campaign;
+import com.xpressstarter.entity.Donation;
 import com.xpressstarter.entity.User;
 import com.xpressstarter.repository.CampaignRepository;
+import com.xpressstarter.repository.DonationRepository;
 import com.xpressstarter.repository.UserRepository;
 import com.xpressstarter.util.CampaignCategory;
+import com.xpressstarter.util.DonationStatus;
 import com.xpressstarter.util.Role;
 
 @Component
@@ -24,7 +27,9 @@ public class MockDataLoader implements ApplicationRunner{
 	
 	@Autowired
 	private UserRepository uRep;
-	
+
+	@Autowired
+	private DonationRepository dRep;
 	@Override
 	public void run(ApplicationArguments arg0) throws Exception {
 		uRep.deleteAll();
@@ -56,8 +61,10 @@ public class MockDataLoader implements ApplicationRunner{
 			String template = templates[x % templates.length];
 			String buzzword = causes[x % causes.length];
 			String title = String.format(template, buzzword);
-			Campaign c = new Campaign(title, "This is a test description", u.getId(), (double)(x*100+1),(double) (x*12-x), LocalDateTime.now(), LocalDateTime.now(), CampaignCategory.ARTS, true);
-			cRep.save(c);
+			Campaign c = new Campaign(title, "This is a test description", u.getId(), (double)(x*100+1),(double) (x*12.5-x), LocalDateTime.now(), LocalDateTime.now(), CampaignCategory.ARTS, true);
+			c=cRep.save(c);
+			Donation d = new Donation(u.getId(),100.00,LocalDateTime.now(),c.getId(),DonationStatus.OK);
+			dRep.save(d);
 		});
 	
 	}

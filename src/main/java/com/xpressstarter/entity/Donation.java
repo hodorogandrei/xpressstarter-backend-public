@@ -19,6 +19,17 @@ public class Donation {
 	private String campaignId;
 	private DonationStatus status;
 	
+	public Donation(){
+		
+	}
+	public Donation(String userId, Double amount, LocalDateTime donatedOn, String campaignId, DonationStatus status) {
+		super();
+		this.userId = userId;
+		this.amount = amount;
+		this.donatedOn = donatedOn;
+		this.campaignId = campaignId;
+		this.status = status;
+	}
 	public String getId() {
 		return id;
 	}
