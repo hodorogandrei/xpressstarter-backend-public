@@ -14,9 +14,9 @@ public class Campaign {
 	@Id
 	private String id;
 	@Indexed
-	private String Name;
+	private String name;
 	@TextIndexed
-	private String Description;
+	private String description;
 	private String beneficiaryId;
 	private Double target;
 	private Double current;
@@ -34,8 +34,8 @@ public class Campaign {
 	public Campaign(String name, String description, String beneficiaryId, Double target, Double current,
 			LocalDateTime startedOn, LocalDateTime expiresOn, CampaignCategory category, Boolean isActive) {
 		super();
-		Name = name;
-		Description = description;
+		this.name = name;
+		this.description = description;
 		this.beneficiaryId = beneficiaryId;
 		this.target = target;
 		this.current = current;
@@ -53,16 +53,16 @@ public class Campaign {
 		this.id = id;
 	}
 	public String getName() {
-		return Name;
+		return name;
 	}
 	public void setName(String name) {
-		Name = name;
+		this.name = name;
 	}
 	public String getDescription() {
-		return Description;
+		return description;
 	}
 	public void setDescription(String description) {
-		Description = description;
+		this.description = description;
 	}
 	
 	public String getBeneficiaryId() {
