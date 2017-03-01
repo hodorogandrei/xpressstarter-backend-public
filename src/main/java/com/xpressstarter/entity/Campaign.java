@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import com.xpressstarter.util.CampaignCategory;
 
@@ -17,7 +18,8 @@ public class Campaign {
 	private String name;
 	@TextIndexed
 	private String description;
-	private String beneficiaryId;
+	@DBRef
+	private User beneficiary;
 	private Double target;
 	private Double current;
 	private LocalDateTime startedOn;
@@ -25,24 +27,27 @@ public class Campaign {
 	private CampaignCategory category;
 	private Boolean isActive;
 	private Boolean isApproved;
-	private String approvedBy;
+	@DBRef
+	private User approvedBy;
+
 	public Campaign(){
 		
 	}
 	
 	
-	public Campaign(String name, String description, String beneficiaryId, Double target, Double current,
-			LocalDateTime startedOn, LocalDateTime expiresOn, CampaignCategory category, Boolean isActive) {
+	public Campaign(String name, String description, User beneficiary, Double target, Double current,
+			LocalDateTime startedOn, LocalDateTime expiresOn, CampaignCategory category, Boolean isActive, User approvedBy) {
 		super();
 		this.name = name;
 		this.description = description;
-		this.beneficiaryId = beneficiaryId;
+		this.beneficiary = beneficiary;
 		this.target = target;
 		this.current = current;
 		this.startedOn = startedOn;
 		this.expiresOn = expiresOn;
 		this.category = category;
 		this.isActive = isActive;
+		this.approvedBy=approvedBy;
 	}
 
 
@@ -65,12 +70,12 @@ public class Campaign {
 		this.description = description;
 	}
 	
-	public String getBeneficiaryId() {
-		return beneficiaryId;
+	public User getBeneficiary() {
+		return beneficiary;
 	}
 
-	public void setBeneficiaryId(String beneficiaryId) {
-		this.beneficiaryId = beneficiaryId;
+	public void setBeneficiary(User beneficiary) {
+		this.beneficiary = beneficiary;
 	}
 
 	public Double getTarget() {
@@ -122,13 +127,16 @@ public class Campaign {
 		this.isApproved = isApproved;
 	}
 
-	public String getApprovedBy() {
+	public User getApprovedBy() {
 		return approvedBy;
 	}
 
-	public void setApprovedBy(String approvedBy) {
+	public void setApprovedBy(User approvedBy) {
 		this.approvedBy = approvedBy;
 	}
+
+
+	
 	
 	
 }

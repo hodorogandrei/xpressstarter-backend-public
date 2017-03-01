@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import com.xpressstarter.util.DonationStatus;
 
@@ -12,22 +13,24 @@ public class Donation {
 	@Id
 	private String id;
 	@Indexed
-	private String userId;
+	@DBRef
+	private User user;
 	private Double amount;
 	private LocalDateTime donatedOn;
 	@Indexed
-	private String campaignId;
+	@DBRef
+	private Campaign campaign;
 	private DonationStatus status;
 	
 	public Donation(){
 		
 	}
-	public Donation(String userId, Double amount, LocalDateTime donatedOn, String campaignId, DonationStatus status) {
+	public Donation(User user, Double amount, LocalDateTime donatedOn, Campaign campaign, DonationStatus status) {
 		super();
-		this.userId = userId;
+		this.user = user;
 		this.amount = amount;
 		this.donatedOn = donatedOn;
-		this.campaignId = campaignId;
+		this.campaign = campaign;
 		this.status = status;
 	}
 	public String getId() {
@@ -36,11 +39,11 @@ public class Donation {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getBenefactor() {
-		return userId;
+	public User getBenefactor() {
+		return user;
 	}
-	public void setBenefactor(String userId) {
-		this.userId = userId;
+	public void setBenefactor(User user) {
+		this.user = user;
 	}
 	public Double getAmount() {
 		return amount;
@@ -54,11 +57,11 @@ public class Donation {
 	public void setDonatedOn(LocalDateTime donatedOn) {
 		this.donatedOn = donatedOn;
 	}
-	public String getCampaign() {
-		return campaignId;
+	public Campaign getCampaign() {
+		return campaign;
 	}
-	public void setCampaign(String campaignId) {
-		this.campaignId = campaignId;
+	public void setCampaign(Campaign campaign) {
+		this.campaign = campaign;
 	}
 	public DonationStatus getStatus(){
 		return status;

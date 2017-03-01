@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
@@ -11,9 +12,11 @@ public class Like {
 	@Id
 	private String id;
 	@Indexed
-	private String userId;
+	@DBRef
+	private User user;
 	@Indexed
-	private String campaignId;
+	@DBRef
+	private Campaign campaign;
 	private LocalDateTime givenOn;
 	
 	public Like(){
@@ -31,18 +34,19 @@ public class Like {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getUserId() {
-		return userId;
+	public User getUser() {
+		return user;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setUser(User user) {
+		this.user = user;
 	}
-	public String getCampaignId() {
-		return campaignId;
+	public Campaign getCampaign() {
+		return campaign;
 	}
-	public void setCampaignId(String campaignId) {
-		this.campaignId = campaignId;
+	public void setCampaign(Campaign campaign) {
+		this.campaign = campaign;
 	}
+	
 	
 	
 	
