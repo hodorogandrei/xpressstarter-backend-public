@@ -13,7 +13,7 @@ import com.xpressstarter.entity.Donation;
 import com.xpressstarter.repository.CampaignRepository;
 import com.xpressstarter.repository.DonationRepository;
 
-@Component
+@Component("DonationEventHandler")
 @RepositoryEventHandler(Donation.class)
 public class DonationEventHandler {
 
@@ -26,7 +26,7 @@ public class DonationEventHandler {
 	@HandleAfterCreate
 	@HandleAfterSave
 	public void recalculatePledges(Donation donation){
-		Campaign campaign = cRep.findOne(donation.getCampaign());
+		Campaign campaign = donation.getCampaign();
 		List<Donation> donations = dRep.findByCampaignId(campaign.getId());
 		campaign.setCurrent(donations.stream().mapToDouble(x -> x.getAmount()).sum());
 		cRep.save(campaign);
