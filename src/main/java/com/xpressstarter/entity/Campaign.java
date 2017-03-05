@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.xpressstarter.util.CampaignCategory;
 
 
@@ -135,7 +136,10 @@ public class Campaign {
 		this.approvedBy = approvedBy;
 	}
 
-
+	@JsonProperty("percentage")
+	private Double calculatePercentage(){
+		return (this.current/this.target)*100;
+	}
 	
 	
 	
