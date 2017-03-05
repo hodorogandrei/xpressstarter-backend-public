@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.HandleAfterCreate;
 import org.springframework.data.rest.core.annotation.HandleAfterSave;
 import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
-import org.springframework.data.rest.core.annotation.HandleBeforeSave;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.stereotype.Component;
 
@@ -32,13 +31,12 @@ public class DonationEventHandler {
 	@HandleBeforeCreate
 	public void validateAndCreate(Donation donation){
 		donation.setDonatedOn(LocalDateTime.now());
-		validate(donation);
 	}
-	
-	@HandleBeforeSave
-	public void validateAndUpdate(Donation donation){
-		validate(donation);
-	}
+//	
+//	@HandleBeforeSave
+//	public void validateAndUpdate(Donation donation){
+//		validate(donation);
+//	}
 	
 	@HandleAfterCreate
 	@HandleAfterSave

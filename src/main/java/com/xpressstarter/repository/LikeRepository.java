@@ -12,5 +12,5 @@ public interface LikeRepository extends MongoRepository<Like, String>{
 	public List<Like> findByCampaignId(@Param("campaignid")String campaignId);
 	public List<Like> findByUserId(@Param("userid")String userId);
 	public Like findByUserIdAndCampaignId(@Param("userid")String userId,@Param("campaignid")String campaignId);
-	public int countByCampaignId(@Param("campaign")String campaignId);
+	public int countByCampaignId(@Param("campaignid")String campaignId);
 }

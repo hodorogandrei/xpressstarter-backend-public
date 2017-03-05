@@ -25,8 +25,8 @@ public class LikeEventHandler {
 	@HandleBeforeCreate
 	public void validateAndSet(Like like) {
 		like.setGivenOn(LocalDateTime.now());
-		checkCampaign(like.getCampaign());
-		checkUser(like.getUser());
+//		checkCampaign(like.getCampaign());
+//		checkUser(like.getUser());
 		checkIfAlreadyGiven(like);
 	}
 	private void checkCampaign(Campaign campaign){
