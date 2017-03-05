@@ -2,6 +2,10 @@ package com.xpressstarter.entity;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
@@ -16,19 +20,34 @@ public class Campaign {
 	@Id
 	private String id;
 	@Indexed
+	@NotNull
+	@Size(min=7,max=144)
 	private String name;
 	@TextIndexed
+	@NotNull
+	@Size(min=7,max=144)
 	private String description;
 	@DBRef
+	@NotNull
 	private User beneficiary;
+	@NotNull
+	@Min(value=0)
 	private Double target;
+	@NotNull
+	@Min(value=0)
 	private Double current;
+	@NotNull
 	private LocalDateTime startedOn;
+	@NotNull
 	private LocalDateTime expiresOn;
+	@NotNull
 	private CampaignCategory category;
+	@NotNull
 	private Boolean isActive;
+	@NotNull
 	private Boolean isApproved;
 	@DBRef
+	@NotNull
 	private User approvedBy;
 
 	public Campaign(){

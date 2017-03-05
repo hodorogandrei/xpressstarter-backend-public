@@ -2,6 +2,9 @@ package com.xpressstarter.entity;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -14,12 +17,18 @@ public class Donation {
 	private String id;
 	@Indexed
 	@DBRef
+	@NotNull
 	private User user;
+	@NotNull
+	@Min(value=0L)
 	private Double amount;
+	@NotNull
 	private LocalDateTime donatedOn;
 	@Indexed
 	@DBRef
+	@NotNull
 	private Campaign campaign;
+	@NotNull
 	private DonationStatus status;
 	
 	public Donation(){

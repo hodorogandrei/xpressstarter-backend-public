@@ -2,6 +2,8 @@ package com.xpressstarter.entity;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -13,10 +15,13 @@ public class Like {
 	private String id;
 	@Indexed
 	@DBRef
+	@NotNull
 	private User user;
 	@Indexed
 	@DBRef
+	@NotNull
 	private Campaign campaign;
+	@NotNull
 	private LocalDateTime givenOn;
 	
 	public Like(){

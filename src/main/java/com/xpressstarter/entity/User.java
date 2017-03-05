@@ -2,6 +2,10 @@ package com.xpressstarter.entity;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 
@@ -14,15 +18,24 @@ public class User {
 	@Id
 	private String id;
 	@Indexed
+	@NotNull
+	@Size(min=3,max=14)
 	private String firstname;
 	@Indexed
+	@NotNull
+	@Size(min=3,max=14)
 	private String lastname;
 	@Indexed
+	@NotNull
+	@Email
 	private String email;
 	@JsonIgnore
 	private String passwordHash;
+	@NotNull
 	private Boolean wantsToReceiveEmail;
+	@NotNull
 	private LocalDateTime memberSince;
+	@NotNull
 	private Role role;
 	
 	public User(){
