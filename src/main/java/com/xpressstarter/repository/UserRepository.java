@@ -6,4 +6,5 @@ import com.xpressstarter.entity.User;
 
 public interface UserRepository extends MongoRepository<User, String>{
 
+	public User findByEmail(String email);
 }

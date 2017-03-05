@@ -21,7 +21,6 @@ public class Like {
 	@DBRef
 	@NotNull
 	private Campaign campaign;
-	@NotNull
 	private LocalDateTime givenOn;
 	
 	public Like(){

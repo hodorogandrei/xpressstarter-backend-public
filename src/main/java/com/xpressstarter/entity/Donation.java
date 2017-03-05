@@ -22,7 +22,6 @@ public class Donation {
 	@NotNull
 	@Min(value=0L)
 	private Double amount;
-	@NotNull
 	private LocalDateTime donatedOn;
 	@Indexed
 	@DBRef
