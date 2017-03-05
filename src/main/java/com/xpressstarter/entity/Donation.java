@@ -47,10 +47,10 @@ public class Donation {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public User getBenefactor() {
+	public User getUser() {
 		return user;
 	}
-	public void setBenefactor(User user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 	public Double getAmount() {

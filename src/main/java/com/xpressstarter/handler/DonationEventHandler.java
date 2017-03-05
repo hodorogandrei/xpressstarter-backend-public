@@ -58,6 +58,6 @@ public class DonationEventHandler {
 	}
 	private void validate(Donation donation){
 		checkCampaign(donation.getCampaign());
-		checkUser(donation.getBenefactor());
+		checkUser(donation.getUser());
 	}
 }

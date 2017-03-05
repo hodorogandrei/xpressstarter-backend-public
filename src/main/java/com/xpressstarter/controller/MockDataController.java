@@ -68,7 +68,7 @@ public class MockDataController {
 					"This is a test description", 
 					u, 
 					(double)(x*100+1),
-					(double) (x*12.5-x),
+					(double) 100,
 					LocalDateTime.now(),
 					LocalDateTime.now(),
 					CampaignCategory.ARTS,

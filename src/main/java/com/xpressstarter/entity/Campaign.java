@@ -156,8 +156,8 @@ public class Campaign {
 	}
 
 	@JsonProperty("percentage")
-	private Double calculatePercentage(){
-		return (this.current/this.target)*100;
+	private Float calculatePercentage(){
+		return (float)(this.current/this.target)*100;
 	}
 	
 	
