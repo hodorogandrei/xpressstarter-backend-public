@@ -1,6 +1,8 @@
 package com.xpressstarter.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -49,9 +51,12 @@ public class Campaign {
 	@DBRef
 	@NotNull
 	private User approvedBy;
+	@NotNull
+	private List<String> pictures;
+	private String mainPicture;
 
 	public Campaign(){
-		
+		pictures=new ArrayList<>();
 	}
 	
 	
@@ -158,6 +163,26 @@ public class Campaign {
 	@JsonProperty("percentage")
 	private Float calculatePercentage(){
 		return (float)(this.current/this.target)*100;
+	}
+
+
+	public List<String> getPictures() {
+		return pictures;
+	}
+
+
+	public void setPictures(List<String> pictures) {
+		this.pictures = pictures;
+	}
+
+
+	public String getMainPicture() {
+		return mainPicture;
+	}
+
+
+	public void setMainPicture(String mainPicture) {
+		this.mainPicture = mainPicture;
 	}
 	
 	

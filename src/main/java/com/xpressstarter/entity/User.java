@@ -37,7 +37,8 @@ public class User {
 	private LocalDateTime memberSince;
 	@NotNull
 	private Role role;
-	
+	@NotNull
+	private String profilePicture;
 	public User(){
 		
 	}
@@ -101,6 +102,14 @@ public class User {
 	}
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public String getProfilePicture() {
+		return profilePicture;
+	}
+
+	public void setProfilePicture(String profilePicture) {
+		this.profilePicture = profilePicture;
 	}
 	
 	
