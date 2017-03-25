@@ -1,5 +1,6 @@
 package com.xpressstarter.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -165,7 +166,8 @@ public class Campaign {
 
 	@JsonProperty("percentage")
 	public Float calculatePercentage(){
-		return (float)(this.current/this.target)*100;
+		BigDecimal percentage = new BigDecimal((float)(this.current/this.target)*100);
+		return percentage.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
 	}
 
 

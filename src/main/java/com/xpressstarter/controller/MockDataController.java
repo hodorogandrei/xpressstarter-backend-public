@@ -2,6 +2,7 @@ package com.xpressstarter.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,12 +64,13 @@ public class MockDataController {
 				"Where would we be without %s ? "
 				
 		};
-		
+		Random random = new Random();
 		IntStream.range(0,90).forEach((x) -> {
 			User u = users.get(x % users.size());
 			String template = templates[x % templates.length];
 			String buzzword = causes[x % causes.length];
 			String title = String.format(template, buzzword);
+			
 			Campaign c = new Campaign(
 					title, 
 					"This is a test description", 
@@ -76,7 +78,7 @@ public class MockDataController {
 					(double)(x*100+1),
 					(double) 100,
 					LocalDateTime.now(),
-					LocalDateTime.now(),
+					LocalDateTime.now().plusDays(random.nextInt(100)),
 					CampaignCategory.ARTS,
 					true,
 					users.get(0));
