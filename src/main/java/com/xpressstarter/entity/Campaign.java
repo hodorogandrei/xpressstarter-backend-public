@@ -53,7 +53,10 @@ public class Campaign {
 	private User approvedBy;
 	@NotNull
 	private List<String> pictures;
+	@NotNull
 	private String mainPicture;
+	@NotNull
+	private Integer likeCount;
 
 	public Campaign(){
 		pictures=new ArrayList<>();
@@ -161,7 +164,7 @@ public class Campaign {
 	}
 
 	@JsonProperty("percentage")
-	private Float calculatePercentage(){
+	public Float calculatePercentage(){
 		return (float)(this.current/this.target)*100;
 	}
 
@@ -183,6 +186,118 @@ public class Campaign {
 
 	public void setMainPicture(String mainPicture) {
 		this.mainPicture = mainPicture;
+	}
+
+
+	public Integer getLikeCount() {
+		return likeCount;
+	}
+
+
+	public void setLikeCount(Integer likeCount) {
+		this.likeCount = likeCount;
+	}
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((approvedBy == null) ? 0 : approvedBy.hashCode());
+		result = prime * result + ((beneficiary == null) ? 0 : beneficiary.hashCode());
+		result = prime * result + ((category == null) ? 0 : category.hashCode());
+		result = prime * result + ((current == null) ? 0 : current.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((expiresOn == null) ? 0 : expiresOn.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((isActive == null) ? 0 : isActive.hashCode());
+		result = prime * result + ((isApproved == null) ? 0 : isApproved.hashCode());
+		result = prime * result + ((mainPicture == null) ? 0 : mainPicture.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((pictures == null) ? 0 : pictures.hashCode());
+		result = prime * result + ((startedOn == null) ? 0 : startedOn.hashCode());
+		result = prime * result + ((target == null) ? 0 : target.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Campaign other = (Campaign) obj;
+		if (approvedBy == null) {
+			if (other.approvedBy != null)
+				return false;
+		} else if (!approvedBy.equals(other.approvedBy))
+			return false;
+		if (beneficiary == null) {
+			if (other.beneficiary != null)
+				return false;
+		} else if (!beneficiary.equals(other.beneficiary))
+			return false;
+		if (category != other.category)
+			return false;
+		if (current == null) {
+			if (other.current != null)
+				return false;
+		} else if (!current.equals(other.current))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (expiresOn == null) {
+			if (other.expiresOn != null)
+				return false;
+		} else if (!expiresOn.equals(other.expiresOn))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (isActive == null) {
+			if (other.isActive != null)
+				return false;
+		} else if (!isActive.equals(other.isActive))
+			return false;
+		if (isApproved == null) {
+			if (other.isApproved != null)
+				return false;
+		} else if (!isApproved.equals(other.isApproved))
+			return false;
+		if (mainPicture == null) {
+			if (other.mainPicture != null)
+				return false;
+		} else if (!mainPicture.equals(other.mainPicture))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (pictures == null) {
+			if (other.pictures != null)
+				return false;
+		} else if (!pictures.equals(other.pictures))
+			return false;
+		if (startedOn == null) {
+			if (other.startedOn != null)
+				return false;
+		} else if (!startedOn.equals(other.startedOn))
+			return false;
+		if (target == null) {
+			if (other.target != null)
+				return false;
+		} else if (!target.equals(other.target))
+			return false;
+		return true;
 	}
 	
 	

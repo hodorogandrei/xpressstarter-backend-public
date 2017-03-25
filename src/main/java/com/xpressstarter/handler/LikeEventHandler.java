@@ -28,6 +28,8 @@ public class LikeEventHandler {
 //		checkCampaign(like.getCampaign());
 //		checkUser(like.getUser());
 		checkIfAlreadyGiven(like);
+		Campaign campaign = like.getCampaign();
+		campaign.setLikeCount(lRep.countByCampaignId(campaign.getId()));
 	}
 	private void checkCampaign(Campaign campaign){
 		if (campaign==null) throw new CampaignDoesNotExistException();

@@ -13,6 +13,7 @@ import com.xpressstarter.entity.Donation;
 import com.xpressstarter.entity.User;
 import com.xpressstarter.repository.CampaignRepository;
 import com.xpressstarter.repository.DonationRepository;
+import com.xpressstarter.repository.LikeRepository;
 import com.xpressstarter.repository.UserRepository;
 import com.xpressstarter.util.CampaignCategory;
 import com.xpressstarter.util.DonationStatus;
@@ -31,11 +32,16 @@ public class MockDataController {
 	@Autowired
 	private DonationRepository dRep;
 	
+	@Autowired
+	private LikeRepository lRep;
+	
 	@RequestMapping
 	public void loadMockData(){
 		uRep.deleteAll();
 		cRep.deleteAll();
 		dRep.deleteAll();
+		lRep.deleteAll();
+		
 		uRep.save(new User("Andrei","Dumitrescu","andrei@test.com","ksdhfisd",false,LocalDateTime.now(),Role.ADMIN));
 		uRep.save(new User("Vlad","Petreanu","vpetreanu@test.com","ksdhfisd",false,LocalDateTime.now(),Role.BENEFICIARY));
 		uRep.save(new User("Andrei","Hodorog","andrei.hodorog@test.com","ksdhfisd",false,LocalDateTime.now(),Role.ADMIN));
@@ -74,6 +80,7 @@ public class MockDataController {
 					CampaignCategory.ARTS,
 					true,
 					users.get(0));
+			c.setLikeCount(0);
 			c=cRep.save(c);
 			Donation d = new Donation(u,100.00,LocalDateTime.now(),c,DonationStatus.OK);
 			d=dRep.save(d);
