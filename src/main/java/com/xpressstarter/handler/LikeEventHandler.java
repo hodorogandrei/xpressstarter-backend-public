@@ -13,6 +13,7 @@ import com.xpressstarter.entity.User;
 import com.xpressstarter.exceptions.AlreadyLikedCampaignException;
 import com.xpressstarter.exceptions.CampaignDoesNotExistException;
 import com.xpressstarter.exceptions.UserDoesNotExistException;
+import com.xpressstarter.repository.CampaignRepository;
 import com.xpressstarter.repository.LikeRepository;
 
 @Component("LikeEventHandler")
@@ -22,6 +23,9 @@ public class LikeEventHandler {
 	@Autowired
 	LikeRepository lRep;
 	
+	@Autowired
+	CampaignRepository cRep;
+	
 	@HandleBeforeCreate
 	public void validateAndSet(Like like) {
 		like.setGivenOn(LocalDateTime.now());
@@ -30,6 +34,7 @@ public class LikeEventHandler {
 		checkIfAlreadyGiven(like);
 		Campaign campaign = like.getCampaign();
 		campaign.setLikeCount(lRep.countByCampaignId(campaign.getId()));
+		cRep.save(campaign);
 	}
 	private void checkCampaign(Campaign campaign){
 		if (campaign==null) throw new CampaignDoesNotExistException();
