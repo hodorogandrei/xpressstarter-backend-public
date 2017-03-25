@@ -3,6 +3,7 @@ package com.xpressstarter.handler;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.core.annotation.HandleAfterCreate;
 import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,10 @@ public class LikeEventHandler {
 //		checkCampaign(like.getCampaign());
 //		checkUser(like.getUser());
 		checkIfAlreadyGiven(like);
+		
+	}
+	@HandleAfterCreate
+	public void setLikeCount(Like like){
 		Campaign campaign = like.getCampaign();
 		campaign.setLikeCount(lRep.countByCampaignId(campaign.getId()));
 		cRep.save(campaign);
