@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xpressstarter.entity.Campaign;
-import com.xpressstarter.entity.Donation;
 import com.xpressstarter.repository.CampaignRepository;
 import com.xpressstarter.repository.DonationRepository;
 import com.xpressstarter.repository.LikeRepository;
@@ -87,9 +86,8 @@ public class StatisticsService {
 			double sum=0;
 			int donationCount = 0;
 			for (Campaign campaign:cRep.findAll()){
-				List<Donation> donations = dRep.findByCampaignId(campaign.getId());
-				sum+=donations.stream().mapToDouble(x -> x.getAmount()).sum();
-				donationCount+=donations.size();
+				sum+=campaign.getCurrent();
+				donationCount+=dRep.countByCampaignId(campaign.getId());
 			}
 
 			values.add(new StatisticCategoryEntry(category,sum/donationCount));
