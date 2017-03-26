@@ -12,9 +12,6 @@ import org.springframework.stereotype.Component;
 
 import com.xpressstarter.entity.Campaign;
 import com.xpressstarter.entity.Donation;
-import com.xpressstarter.entity.User;
-import com.xpressstarter.exceptions.CampaignDoesNotExistException;
-import com.xpressstarter.exceptions.UserDoesNotExistException;
 import com.xpressstarter.repository.CampaignRepository;
 import com.xpressstarter.repository.DonationRepository;
 
@@ -46,16 +43,5 @@ public class DonationEventHandler {
 		campaign.setCurrent(donations.stream().mapToDouble(x -> x.getAmount()).sum());
 		cRep.save(campaign);
 		
-	}
-	
-	private void checkCampaign(Campaign campaign){
-		if (campaign==null) throw new CampaignDoesNotExistException();
-	}
-	private void checkUser(User user){
-		if (user==null) throw new UserDoesNotExistException();
-	}
-	private void validate(Donation donation){
-		checkCampaign(donation.getCampaign());
-		checkUser(donation.getUser());
 	}
 }
