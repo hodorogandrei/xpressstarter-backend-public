@@ -7,9 +7,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.xpressstarter.entity.Donation;
-import com.xpressstarter.util.InlineName;
+import com.xpressstarter.util.InlineDonationView;
 
-@RepositoryRestResource(excerptProjection = InlineName.class)	
+@RepositoryRestResource(excerptProjection = InlineDonationView.class)	
 public interface DonationRepository extends MongoRepository<Donation,String> {
 	public List<Donation> findByCampaignId(@Param("campaignid") String campaignId);
 	public List<Donation> findByUserId(@Param("userid") String userId);

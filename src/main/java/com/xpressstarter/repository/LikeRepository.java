@@ -7,8 +7,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.xpressstarter.entity.Like;
-import com.xpressstarter.util.InlineName;
-@RepositoryRestResource(excerptProjection = InlineName.class)
+import com.xpressstarter.util.InlineLikeView;
+@RepositoryRestResource(excerptProjection = InlineLikeView.class)
 public interface LikeRepository extends MongoRepository<Like, String>{
 
 	public List<Like> findByCampaignId(@Param("campaignid")String campaignId);
