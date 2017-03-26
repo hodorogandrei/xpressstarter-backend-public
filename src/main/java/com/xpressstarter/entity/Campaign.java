@@ -35,10 +35,10 @@ public class Campaign {
 	private User beneficiary;
 	@NotNull
 	@Min(value=0)
-	private Double target;
+	private BigDecimal target;
 	@NotNull
 	@Min(value=0)
-	private Double current;
+	private BigDecimal current;
 	@NotNull
 	private LocalDateTime startedOn;
 	@NotNull
@@ -70,8 +70,8 @@ public class Campaign {
 		this.name = name;
 		this.description = description;
 		this.beneficiary = beneficiary;
-		this.target = target;
-		this.current = current;
+		this.target = new BigDecimal(target);
+		this.current = new BigDecimal(current);
 		this.startedOn = startedOn;
 		this.expiresOn = expiresOn;
 		this.category = category;
@@ -108,16 +108,16 @@ public class Campaign {
 	}
 
 	public Double getTarget() {
-		return target;
+		return target.setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
 	}
 	public void setTarget(Double target) {
-		this.target = target;
+		this.target = new BigDecimal(target);
 	}
 	public Double getCurrent() {
-		return current;
+		return current.setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
 	}
 	public void setCurrent(Double current) {
-		this.current = current;
+		this.current = new BigDecimal(current);
 	}
 	public LocalDateTime getStartedOn() {
 		return startedOn;
@@ -166,7 +166,7 @@ public class Campaign {
 
 	@JsonProperty("percentage")
 	public Float calculatePercentage(){
-		BigDecimal percentage = new BigDecimal((float)(this.current/this.target)*100);
+		BigDecimal percentage = new BigDecimal((float)(this.getCurrent()/this.getTarget())*100);
 		return percentage.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
 	}
 

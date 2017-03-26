@@ -1,5 +1,6 @@
 package com.xpressstarter.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import javax.validation.constraints.Min;
@@ -54,7 +55,7 @@ public class Donation {
 		this.user = user;
 	}
 	public Double getAmount() {
-		return amount;
+		return new BigDecimal(amount).setScale(2,BigDecimal.ROUND_HALF_DOWN).doubleValue();
 	}
 	public void setAmount(Double amount) {
 		this.amount = amount;
