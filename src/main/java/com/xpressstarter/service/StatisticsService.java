@@ -1,7 +1,6 @@
 package com.xpressstarter.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -82,7 +81,7 @@ public class StatisticsService {
 	}
 	
 	public Object[][] getAverageDonationPerCategory(){
-		List<Statistical> values= new ArrayList<>();
+		List<Statistical> values= new LinkedList<>();
 		List<CampaignCategory> categories = Arrays.asList(CampaignCategory.values());
 		for(CampaignCategory category:categories){
 			double sum=0;
