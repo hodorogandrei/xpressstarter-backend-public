@@ -1,15 +1,20 @@
 package com.xpressstarter.controller;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xpressstarter.entity.Campaign;
 import com.xpressstarter.entity.Donation;
 import com.xpressstarter.entity.User;
@@ -19,6 +24,8 @@ import com.xpressstarter.repository.LikeRepository;
 import com.xpressstarter.repository.UserRepository;
 import com.xpressstarter.util.CampaignCategory;
 import com.xpressstarter.util.DonationStatus;
+import com.xpressstarter.util.MockCampaign;
+import com.xpressstarter.util.MockUser;
 import com.xpressstarter.util.Role;
 
 @RestController
@@ -45,39 +52,56 @@ public class MockDataController {
 		lRep.deleteAll();
 		
 		uRep.save(new User("Andrei","Dumitrescu","andrei@test.com","ksdhfisd",false,LocalDateTime.now(),Role.ADMIN));
-		uRep.save(new User("Vlad","Petreanu","vpetreanu@test.com","ksdhfisd",false,LocalDateTime.now(),Role.BENEFICIARY));
 		uRep.save(new User("Andrei","Hodorog","andrei.hodorog@test.com","ksdhfisd",false,LocalDateTime.now(),Role.ADMIN));
-		
-		
-		final List<User> users=uRep.findAll();
-		String[] causes = {
-				"Wales",
-				"Parks",
-				"Buildings",
-				"Galeries",
-				"Football Fields",
-				"Local Watering Holes"
-		};
-		String[] templates = {
-				"Save the %s",
-				"Rescue the %s",
-				"Let's not forget about %s",
-				"Where would we be without %s ? "
-				
-		};
+		File mockUsersFile = new File("mock_users.json");
+		ObjectMapper jsonMapper = new ObjectMapper();
 		Random random = new Random();
-		IntStream.range(0,90).forEach((x) -> {
-			User u = users.get(x % users.size());
-			String template = templates[x % templates.length];
-			String buzzword = causes[x % causes.length];
-			String title = String.format(template, buzzword);
+		try {
+			List<MockUser> mockUsers= jsonMapper.readValue( new FileReader(mockUsersFile),new TypeReference<List<MockUser>>(){});
+			System.out.println(mockUsers.size());
+			for (MockUser mockUser:mockUsers){
+				User user = new User();
+				user.setEmail(mockUser.getEmail());
+				user.setFirstname(mockUser.getFirst_name());
+				user.setLastname(mockUser.getLast_name());
+				user.setPasswordHash(mockUser.getPassword());
+				user.setWantsToReceiveEmail(random.nextBoolean());
+				user.setMemberSince(LocalDateTime.of(2010+random.nextInt(7), 1+random.nextInt(12), 1+random.nextInt(28), random.nextInt(24), random.nextInt(60)));
+				int role = random.nextInt(2);
+				if (role==1){
+					user.setRole(Role.BENEFACTOR);
+				} else {
+					user.setRole(Role.BENEFICIARY);
+				}
+				uRep.save(user);
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		
+		
+		final List<User> users=uRep.findAll().stream().filter(x -> x.getRole().equals(Role.BENEFICIARY)).collect(Collectors.toList());
+		File mockCampaignsFile = new File("mock_campaigns.json");
+		List<MockCampaign> mockCampaigns=null;
+		try {
+			mockCampaigns = jsonMapper.readValue( new FileReader(mockCampaignsFile),new TypeReference<List<MockCampaign>>(){});
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for (MockCampaign mockCampaign:mockCampaigns){
+			User u = users.get(random.nextInt(users.size()));
+			String title = mockCampaign.getName(); 
 			List<CampaignCategory> categories = Arrays.asList(CampaignCategory.values());
 			Campaign c = new Campaign(
 					title, 
-					"This is a test description", 
+					mockCampaign.getDescription(), 
 					u, 
-					(double)(x*100+1),
-					(double) 100,
+					10000.00+(random.nextDouble()*90000),
+					0.0,
 					LocalDateTime.now(),
 					LocalDateTime.now().plusDays(random.nextInt(100)),
 					categories.get(random.nextInt(categories.size())),
@@ -87,8 +111,8 @@ public class MockDataController {
 			c=cRep.save(c);
 			Donation d = new Donation(u,100.00,LocalDateTime.now(),c,DonationStatus.OK);
 			d=dRep.save(d);
-		});
-	
+		}
+			
 
 	}
 }
