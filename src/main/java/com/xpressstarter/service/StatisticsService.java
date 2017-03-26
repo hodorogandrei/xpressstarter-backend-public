@@ -14,7 +14,6 @@ import com.xpressstarter.entity.Donation;
 import com.xpressstarter.repository.CampaignRepository;
 import com.xpressstarter.repository.DonationRepository;
 import com.xpressstarter.repository.LikeRepository;
-import com.xpressstarter.repository.UserRepository;
 import com.xpressstarter.util.CampaignSorter;
 import com.xpressstarter.util.StatisticEntry;
 
@@ -24,8 +23,8 @@ public class StatisticsService {
 	@Autowired
 	private CampaignRepository cRep;
 	
-	@Autowired
-	private UserRepository uRep;
+//	@Autowired
+//	private UserRepository uRep;
 	
 	@Autowired
 	private DonationRepository dRep;
