@@ -18,7 +18,7 @@ import com.xpressstarter.repository.LikeRepository;
 public class ActivityGeneratorRunner implements Runnable{
 	private static Random random;
 	private static final int MAX_LIKES_TO_GIVE=10;
-	private static final int MAX_DONATIONS_TO_GIVE=10;
+	private static final int MAX_DONATIONS_TO_GIVE=5;
 	private static final AtomicInteger count=new AtomicInteger(1);
 	private User user;
 	private int number;
@@ -79,7 +79,7 @@ public class ActivityGeneratorRunner implements Runnable{
 		for (int i =1;i<=donationsToGive;i++){
 			Campaign campaign = campaigns.get(ActivityGeneratorRunner.random.nextInt(campaigns.size()>=0?campaigns.size():0));
 			Donation donation=new Donation();
-			donation.setAmount(ActivityGeneratorRunner.random.nextDouble()*300);
+			donation.setAmount(ActivityGeneratorRunner.random.nextDouble()*100);
 			donation.setCampaign(campaign);
 			donation.setStatusOK();
 			donation.setUser(this.user);

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
@@ -25,6 +26,7 @@ import com.xpressstarter.repository.DonationRepository;
 import com.xpressstarter.repository.LikeRepository;
 import com.xpressstarter.repository.UserRepository;
 import com.xpressstarter.util.ActivityGeneratorRunner;
+import com.xpressstarter.util.CampaignCategory;
 import com.xpressstarter.util.DonationStatus;
 import com.xpressstarter.util.MockCampaign;
 import com.xpressstarter.util.MockUser;
@@ -106,6 +108,7 @@ public class MockDataController {
 		final List<User> users=uRep.findAll().stream().filter(x -> x.getRole().equals(Role.BENEFICIARY)).collect(Collectors.toList());
 		File mockCampaignsFile = new File("mock_campaigns.json");
 		List<MockCampaign> mockCampaigns=null;
+		List<CampaignCategory> categories = Arrays.asList(CampaignCategory.values());
 		try {
 			mockCampaigns = jsonMapper.readValue( new FileReader(mockCampaignsFile),new TypeReference<List<MockCampaign>>(){});
 		} catch (IOException e) {
@@ -114,7 +117,7 @@ public class MockDataController {
 		}
 		for (MockCampaign mockCampaign:mockCampaigns){
 			User u = users.get(random.nextInt(users.size()));
-			String title = mockCampaign.getName(); 
+			String title = mockCampaign.getName();
 			Campaign c = new Campaign(
 					title, 
 					mockCampaign.getDescription(), 
@@ -123,7 +126,7 @@ public class MockDataController {
 					0.0,
 					LocalDateTime.now().minusDays(random.nextInt(100)),
 					LocalDateTime.now().plusDays(random.nextInt(100)),
-					mockCampaign.getCategory(),
+					categories.get(random.nextInt(categories.size())),
 					true,
 					users.get(0));
 			c.setLikeCount(0);
