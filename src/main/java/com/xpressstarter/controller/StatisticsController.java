@@ -30,4 +30,9 @@ public class StatisticsController {
 	public Object[][] getNearlyFundedCampaigns(@RequestParam("number") int number) throws IOException{
 		return statsService.getNearlyFundedCampaigns(number);
 	}
+	
+	@GetMapping("/avgdonation")
+	public Object[][] getAverageDonationPerCategory(){
+		return statsService.getAverageDonationPerCategory();
+	}
 }

@@ -11,4 +11,5 @@ public interface DonationRepository extends MongoRepository<Donation,String> {
 	public List<Donation> findByCampaignId(@Param("campaignid") String campaignId);
 	public List<Donation> findByUserId(@Param("userid") String userId);
 	public Donation findByUserIdAndCampaignId(@Param("userid") String userId, @Param("campaignid") String campaignId);
+	public int countByCampaignId(@Param("campaignid")String campaignId);
 }

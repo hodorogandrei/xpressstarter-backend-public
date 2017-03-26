@@ -1,35 +1,23 @@
-package com.xpressstarter.util;
+package com.xpressstarter.statistics;
 
 import com.xpressstarter.entity.Campaign;
 
-public class StatisticEntry implements Comparable<StatisticEntry>{
+public class StatisticCampaignEntry extends Statistical{
 
 	private Campaign campaign;
-	private Number number;
 	
 	
 	
-	public StatisticEntry(){
+	public StatisticCampaignEntry(){
 		
 	}
 	
-	public StatisticEntry(Campaign campaign, Number number)  {
+	public StatisticCampaignEntry(Campaign campaign, Number number)  {
 		super();
 		this.campaign = campaign;
 		this.number = number;
 	}
-	public Campaign getCampaign() {
-		return campaign;
-	}
-	public void setCampaign(Campaign campaign) {
-		this.campaign = campaign;
-	}
-	public Number getNumber() {
-		return number;
-	}
-	public void setNumber(Number number) {
-		this.number = number;
-	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -46,7 +34,7 @@ public class StatisticEntry implements Comparable<StatisticEntry>{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		StatisticEntry other = (StatisticEntry) obj;
+		StatisticCampaignEntry other = (StatisticCampaignEntry) obj;
 		if (campaign == null) {
 			if (other.campaign != null)
 				return false;
@@ -61,15 +49,10 @@ public class StatisticEntry implements Comparable<StatisticEntry>{
 	}
 
 	@Override
-	public int compareTo(StatisticEntry other) {
-		double thisValue=this.number.doubleValue();
-		double otherValue=other.number.doubleValue();
-		
-		if (thisValue > otherValue) return 1;
-		if (thisValue < otherValue) return -1;
-		if (thisValue == otherValue) return 0;
-		return -1;
+	public String getName() {
+		return this.campaign.getName();
 	}
+
 	
 	
 }
