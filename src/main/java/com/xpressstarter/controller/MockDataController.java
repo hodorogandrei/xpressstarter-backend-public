@@ -4,9 +4,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,7 @@ import com.xpressstarter.repository.CampaignRepository;
 import com.xpressstarter.repository.DonationRepository;
 import com.xpressstarter.repository.LikeRepository;
 import com.xpressstarter.repository.UserRepository;
-import com.xpressstarter.util.CampaignCategory;
+import com.xpressstarter.util.ActivityGeneratorRunner;
 import com.xpressstarter.util.DonationStatus;
 import com.xpressstarter.util.MockCampaign;
 import com.xpressstarter.util.MockUser;
@@ -44,6 +46,7 @@ public class MockDataController {
 	@Autowired
 	private LikeRepository lRep;
 	
+	
 	@RequestMapping
 	public void loadMockData(){
 		uRep.deleteAll();
@@ -53,6 +56,21 @@ public class MockDataController {
 		
 		uRep.save(new User("Andrei","Dumitrescu","andrei@test.com","ksdhfisd",false,LocalDateTime.now(),Role.ADMIN));
 		uRep.save(new User("Andrei","Hodorog","andrei.hodorog@test.com","ksdhfisd",false,LocalDateTime.now(),Role.ADMIN));
+		loadMockDataFromJSON(); 
+		generateActivity();
+		for (Campaign campaign:cRep.findAll()){
+			recalculateLikesAndDonations(campaign);
+		}
+		
+
+	}
+	
+	private void loadMockDataFromJSON(){
+		loadMockUsersFromJSON();
+		loadMockCampaignsFromJSON();
+	}
+	
+	private void loadMockUsersFromJSON(){
 		File mockUsersFile = new File("mock_users.json");
 		ObjectMapper jsonMapper = new ObjectMapper();
 		Random random = new Random();
@@ -66,7 +84,7 @@ public class MockDataController {
 				user.setLastname(mockUser.getLast_name());
 				user.setPasswordHash(mockUser.getPassword());
 				user.setWantsToReceiveEmail(random.nextBoolean());
-				user.setMemberSince(LocalDateTime.of(2010+random.nextInt(7), 1+random.nextInt(12), 1+random.nextInt(28), random.nextInt(24), random.nextInt(60)));
+				user.setMemberSince(LocalDateTime.of(2017, 1+random.nextInt(3), 1+random.nextInt(26), random.nextInt(24), random.nextInt(60)));
 				int role = random.nextInt(2);
 				if (role==1){
 					user.setRole(Role.BENEFACTOR);
@@ -79,10 +97,12 @@ public class MockDataController {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
-		
-		
-		
+		}
+	}
+	
+	private void loadMockCampaignsFromJSON(){
+		ObjectMapper jsonMapper = new ObjectMapper();
+		Random random = new Random();
 		final List<User> users=uRep.findAll().stream().filter(x -> x.getRole().equals(Role.BENEFICIARY)).collect(Collectors.toList());
 		File mockCampaignsFile = new File("mock_campaigns.json");
 		List<MockCampaign> mockCampaigns=null;
@@ -95,16 +115,15 @@ public class MockDataController {
 		for (MockCampaign mockCampaign:mockCampaigns){
 			User u = users.get(random.nextInt(users.size()));
 			String title = mockCampaign.getName(); 
-			List<CampaignCategory> categories = Arrays.asList(CampaignCategory.values());
 			Campaign c = new Campaign(
 					title, 
 					mockCampaign.getDescription(), 
 					u, 
 					10000.00+(random.nextDouble()*90000),
 					0.0,
-					LocalDateTime.now(),
+					LocalDateTime.now().minusDays(random.nextInt(100)),
 					LocalDateTime.now().plusDays(random.nextInt(100)),
-					categories.get(random.nextInt(categories.size())),
+					mockCampaign.getCategory(),
 					true,
 					users.get(0));
 			c.setLikeCount(0);
@@ -112,7 +131,27 @@ public class MockDataController {
 			Donation d = new Donation(u,100.00,LocalDateTime.now(),c,DonationStatus.OK);
 			d=dRep.save(d);
 		}
-			
-
+	}
+	
+	private void generateActivity(){
+		ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+		for (User user:uRep.findByRole(Role.BENEFACTOR)){
+			es.execute(new ActivityGeneratorRunner(user,cRep,lRep,dRep));
+		}
+		es.shutdown();
+		try {
+			es.awaitTermination(1, TimeUnit.HOURS);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void recalculateLikesAndDonations(Campaign campaign){
+		campaign.setLikeCount(lRep.countByCampaignId(campaign.getId()));
+		List<Donation> donations = dRep.findByCampaignId(campaign.getId());
+		campaign.setCurrent(donations.stream().mapToDouble(x -> x.getAmount()).sum());
+		cRep.save(campaign);
 	}
 }

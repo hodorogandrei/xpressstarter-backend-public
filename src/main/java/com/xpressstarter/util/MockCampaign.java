@@ -4,6 +4,7 @@ public class MockCampaign {
 
 	private String name;
 	private String description;
+	private CampaignCategory category;
 	public String getName() {
 		return name;
 	}
@@ -15,6 +16,12 @@ public class MockCampaign {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public CampaignCategory getCategory() {
+		return category;
+	}
+	public void setCategory(CampaignCategory category) {
+		this.category = category;
 	}
 	
 	
