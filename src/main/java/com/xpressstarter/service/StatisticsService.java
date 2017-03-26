@@ -1,6 +1,7 @@
 package com.xpressstarter.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -8,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.xpressstarter.entity.Campaign;
@@ -80,16 +82,16 @@ public class StatisticsService {
 	}
 	
 	public Object[][] getAverageDonationPerCategory(){
-		List<Statistical> values= new LinkedList<>();
+		List<Statistical> values= new ArrayList<>();
 		List<CampaignCategory> categories = Arrays.asList(CampaignCategory.values());
 		for(CampaignCategory category:categories){
 			double sum=0;
 			int donationCount = 0;
-			for (Campaign campaign:cRep.findAll()){
+			
+			for (Campaign campaign:cRep.findByCategory(category,new PageRequest(0,Integer.MAX_VALUE))){
 				sum+=campaign.getCurrent();
 				donationCount+=dRep.countByCampaignId(campaign.getId());
 			}
-
 			values.add(new StatisticCategoryEntry(category,sum/donationCount));
 			
 		}
