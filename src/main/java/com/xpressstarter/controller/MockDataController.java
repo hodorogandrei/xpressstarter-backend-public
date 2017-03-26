@@ -1,6 +1,7 @@
 package com.xpressstarter.controller;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -70,7 +71,7 @@ public class MockDataController {
 			String template = templates[x % templates.length];
 			String buzzword = causes[x % causes.length];
 			String title = String.format(template, buzzword);
-			
+			List<CampaignCategory> categories = Arrays.asList(CampaignCategory.values());
 			Campaign c = new Campaign(
 					title, 
 					"This is a test description", 
@@ -79,7 +80,7 @@ public class MockDataController {
 					(double) 100,
 					LocalDateTime.now(),
 					LocalDateTime.now().plusDays(random.nextInt(100)),
-					CampaignCategory.ARTS,
+					categories.get(random.nextInt(categories.size())),
 					true,
 					users.get(0));
 			c.setLikeCount(0);
