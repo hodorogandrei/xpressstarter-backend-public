@@ -9,17 +9,22 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.hateoas.EntityLinks;
 import org.springframework.stereotype.Service;
 
 import com.xpressstarter.entity.Campaign;
+import com.xpressstarter.entity.User;
 import com.xpressstarter.repository.CampaignRepository;
 import com.xpressstarter.repository.DonationRepository;
 import com.xpressstarter.repository.LikeRepository;
+import com.xpressstarter.repository.UserRepository;
 import com.xpressstarter.statistics.StatisticCampaignEntry;
 import com.xpressstarter.statistics.StatisticCategoryEntry;
 import com.xpressstarter.statistics.Statistical;
+import com.xpressstarter.statistics.StatisticalUserEntry;
 import com.xpressstarter.util.CampaignCategory;
 import com.xpressstarter.util.CampaignSorter;
+import com.xpressstarter.util.Role;
 
 @Service
 public class StatisticsService {
@@ -27,8 +32,8 @@ public class StatisticsService {
 	@Autowired
 	private CampaignRepository cRep;
 	
-//	@Autowired
-//	private UserRepository uRep;
+	@Autowired
+	private UserRepository uRep;
 	
 	@Autowired
 	private DonationRepository dRep;
@@ -36,6 +41,8 @@ public class StatisticsService {
 	@Autowired
 	private LikeRepository lRep;
 	
+	@Autowired
+	EntityLinks links;
 	
 	public Object[][] getTopCampaigns(int number, CampaignSorter type) throws IOException{
 		List<Statistical> campaignData;
@@ -95,6 +102,21 @@ public class StatisticsService {
 			
 		}
 		return formatResults(values);
+	}
+	public Object[][] getTopUsersByDonationSum(int number){
+		List<User> users =uRep.findByRole(Role.BENEFACTOR);
+		List<Statistical> values = new LinkedList<>();
+//		for (User user:users){
+//			double sum=0;
+//			sum+=dRep.findByUserId(user.getId()).parallelStream().mapToDouble(x -> x.getAmount()).sum();
+//			values.add(new StatisticalUserEntry(user,sum));
+//		}
+		users.parallelStream().forEach((user)->{
+			
+			values.add(new StatisticalUserEntry(user,user.getTotalDonated()));
+		});
+		values.sort((x,y) -> y.compareTo(x));
+		return formatResults(values.subList(0, number));
 	}
 	
 	private Object[][] formatResults(List<Statistical> statistics){

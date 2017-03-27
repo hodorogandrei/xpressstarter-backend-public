@@ -7,7 +7,6 @@ public class StatisticCampaignEntry extends Statistical{
 	private Campaign campaign;
 	
 	
-	
 	public StatisticCampaignEntry(){
 		
 	}
@@ -52,7 +51,6 @@ public class StatisticCampaignEntry extends Statistical{
 	public String getName() {
 		return this.campaign.getName();
 	}
-
 	
 	
 }

@@ -37,6 +37,7 @@ public class LikeEventHandler {
 		Campaign campaign = like.getCampaign();
 		campaign.setLikeCount(lRep.countByCampaignId(campaign.getId()));
 		cRep.save(campaign);
+		
 	}
 	private void checkIfAlreadyGiven(Like like){
 		Like check = lRep.findByUserIdAndCampaignId(like.getUser().getId(), like.getCampaign().getId());

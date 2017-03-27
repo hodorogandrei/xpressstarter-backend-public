@@ -1,5 +1,6 @@
 package com.xpressstarter.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotNull;
@@ -39,6 +40,8 @@ public class User {
 	private Role role;
 	@NotNull
 	private String profilePicture;
+	@NotNull
+	private double totalDonated;
 	public User(){
 		
 	}
@@ -110,6 +113,15 @@ public class User {
 
 	public void setProfilePicture(String profilePicture) {
 		this.profilePicture = profilePicture;
+	}
+
+	
+	public double getTotalDonated() {
+		return new BigDecimal(totalDonated).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+	}
+
+	public void setTotalDonated(double totalDonated) {
+		this.totalDonated = totalDonated;
 	}
 
 	@Override

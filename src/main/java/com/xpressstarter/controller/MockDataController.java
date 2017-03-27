@@ -63,6 +63,9 @@ public class MockDataController {
 		for (Campaign campaign:cRep.findAll()){
 			recalculateLikesAndDonations(campaign);
 		}
+		for (User user:uRep.findByRole(Role.BENEFACTOR)){
+			recalculateUserDonated(user);
+		}
 		
 
 	}
@@ -156,5 +159,10 @@ public class MockDataController {
 		List<Donation> donations = dRep.findByCampaignId(campaign.getId());
 		campaign.setCurrent(donations.stream().mapToDouble(x -> x.getAmount()).sum());
 		cRep.save(campaign);
+	}
+	private void recalculateUserDonated(User user){
+		List<Donation> donations = dRep.findByUserId(user.getId());
+		user.setTotalDonated(donations.parallelStream().mapToDouble(donation -> donation.getAmount()).sum());
+		uRep.save(user);
 	}
 }

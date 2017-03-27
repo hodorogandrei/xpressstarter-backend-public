@@ -35,4 +35,9 @@ public class StatisticsController {
 	public Object[][] getAverageDonationPerCategory(){
 		return statsService.getAverageDonationPerCategory();
 	}
+	
+	@GetMapping("/topdonatingusers")
+	public Object[][] getTopDonatingUsers(@RequestParam("number") int number){
+		return statsService.getTopUsersByDonationSum(number);
+	}
 }
