@@ -1,16 +1,21 @@
 package com.xpressstarter.statistics;
 
+import org.springframework.hateoas.EntityLinks;
+import org.springframework.hateoas.Link;
+
 import com.xpressstarter.entity.User;
 
 public class StatisticalUserEntry extends Statistical{
 
 	private User user;
+	private EntityLinks links;
 	
 	
-	public StatisticalUserEntry(User user,Number number) {
+	public StatisticalUserEntry(User user,Number number,EntityLinks links) {
 		super();
 		this.user = user;
 		this.number = number;
+		this.links=links;
 	}
 	@Override
 	public String getName() {
@@ -44,6 +49,10 @@ public class StatisticalUserEntry extends Statistical{
 		} else if (!number.equals(other.number))
 			return false;
 		return true;
+	}
+	
+	public Link getLink(){
+		return links.linkToSingleResource(User.class, this.user.getId());
 	}
 	
 

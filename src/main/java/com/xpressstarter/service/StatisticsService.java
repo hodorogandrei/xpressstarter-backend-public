@@ -44,7 +44,7 @@ public class StatisticsService {
 	@Autowired
 	EntityLinks links;
 	
-	public Object[][] getTopCampaigns(int number, CampaignSorter type) throws IOException{
+	public List<Statistical> getTopCampaigns(int number, CampaignSorter type) throws IOException{
 		List<Statistical> campaignData;
 		switch(type){
 		case BY_ACTIVITY:
@@ -68,12 +68,12 @@ public class StatisticsService {
 			throw new IOException("Invalid top number");
 		}
 		List<Statistical> topEntries = campaignData.subList(0, number);
-		return formatResults(topEntries);
+		return topEntries;
 		
 		
 	}
 	
-	public Object[][] getNearlyFundedCampaigns(int number) throws IOException{
+	public List<Statistical> getNearlyFundedCampaigns(int number) throws IOException{
 		List<Statistical> campaignData=getNearlyFoundedCampaigns();
 		Collections.sort(campaignData, new Comparator<Statistical>(){
 			public int compare(Statistical entry1, Statistical entry2){
@@ -84,10 +84,10 @@ public class StatisticsService {
 			throw new IOException("Invalid top number");
 		}
 		List<Statistical> topEntries = campaignData.subList(0, number);
-		return formatResults(topEntries);
+		return topEntries;
 	}
 	
-	public Object[][] getAverageDonationPerCategory(){
+	public List<Statistical> getAverageDonationPerCategory(){
 		List<Statistical> values= new LinkedList<>();
 		List<CampaignCategory> categories = Arrays.asList(CampaignCategory.values());
 		for(CampaignCategory category:categories){
@@ -101,9 +101,9 @@ public class StatisticsService {
 			values.add(new StatisticCategoryEntry(category,sum/donationCount));
 			
 		}
-		return formatResults(values);
+		return values;
 	}
-	public Object[][] getTopUsersByDonationSum(int number){
+	public List<Statistical> getTopUsersByDonationSum(int number){
 		List<User> users =uRep.findByRole(Role.BENEFACTOR);
 		List<Statistical> values = new LinkedList<>();
 //		for (User user:users){
@@ -113,42 +113,42 @@ public class StatisticsService {
 //		}
 		users.parallelStream().forEach((user)->{
 			
-			values.add(new StatisticalUserEntry(user,user.getTotalDonated()));
+			values.add(new StatisticalUserEntry(user,user.getTotalDonated(),links));
 		});
 		values.sort((x,y) -> y.compareTo(x));
-		return formatResults(values.subList(0, number));
+		return values.subList(0, number);
 	}
 	
-	private Object[][] formatResults(List<Statistical> statistics){
-		Object[][] results = new Object[statistics.size()][2];
-		for (int index=0;index<statistics.size();index++){
-			results[index][0]=statistics.get(index).getName();
-			results[index][1]=statistics.get(index).getValue();
-		}
-		return results;
-	}
-	
+//	private Object[][] formatResults(List<Statistical> statistics){
+//		Object[][] results = new Object[statistics.size()][2];
+//		for (int index=0;index<statistics.size();index++){
+//			results[index][0]=statistics.get(index).getName();
+//			results[index][1]=statistics.get(index).getValue();
+//		}
+//		return results;
+//	}
+//	
 	
 	
 	
 	private List<Statistical> getCampaignsWithDonationSum(){
 		List<Statistical> entries = new LinkedList<>();
 		for (Campaign campaign:cRep.findAll()){
-			entries.add(new StatisticCampaignEntry(campaign, campaign.getCurrent()));
+			entries.add(new StatisticCampaignEntry(campaign, campaign.getCurrent(),links));
 		}
 		return entries;
 	}
 	private List<Statistical> getCampaignsWithDonationCount(){
 		List<Statistical> entries = new LinkedList<>();
 		for (Campaign campaign:cRep.findAll()){
-			entries.add(new StatisticCampaignEntry(campaign, getDonationCountByCampaign(campaign)));
+			entries.add(new StatisticCampaignEntry(campaign, getDonationCountByCampaign(campaign),links));
 		}
 		return entries;
 	}
 	private List<Statistical> getCampaignsActivity(){
 		List<Statistical> entries = new LinkedList<>();
 		for (Campaign campaign:cRep.findAll()){
-			entries.add(new StatisticCampaignEntry(campaign, getDonationCountByCampaign(campaign)+getLikesCountByCampaign(campaign)));
+			entries.add(new StatisticCampaignEntry(campaign, getDonationCountByCampaign(campaign)+getLikesCountByCampaign(campaign),links));
 		}
 		return entries;
 	}
@@ -157,7 +157,7 @@ public class StatisticsService {
 		List<Statistical> entries = new LinkedList<>();
 		for (Campaign campaign:cRep.findAll()){
 			if (campaign.calculatePercentage()<100){
-				entries.add(new StatisticCampaignEntry(campaign,campaign.calculatePercentage()));
+				entries.add(new StatisticCampaignEntry(campaign,campaign.calculatePercentage(),links));
 			}
 		}
 		return entries;

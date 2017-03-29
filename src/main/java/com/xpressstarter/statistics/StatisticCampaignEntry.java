@@ -1,20 +1,24 @@
 package com.xpressstarter.statistics;
 
+import org.springframework.hateoas.EntityLinks;
+import org.springframework.hateoas.Link;
+
 import com.xpressstarter.entity.Campaign;
 
 public class StatisticCampaignEntry extends Statistical{
 
 	private Campaign campaign;
-	
+	private EntityLinks links;
 	
 	public StatisticCampaignEntry(){
 		
 	}
 	
-	public StatisticCampaignEntry(Campaign campaign, Number number)  {
+	public StatisticCampaignEntry(Campaign campaign, Number number,EntityLinks links)  {
 		super();
 		this.campaign = campaign;
 		this.number = number;
+		this.links=links;
 	}
 	
 	@Override
@@ -51,6 +55,11 @@ public class StatisticCampaignEntry extends Statistical{
 	public String getName() {
 		return this.campaign.getName();
 	}
+	
+	public Link getLink(){
+		return links.linkToSingleResource(Campaign.class, this.campaign.getId());
+	}
+	
 	
 	
 }
