@@ -14,6 +14,6 @@ public interface CampaignRepository extends PagingAndSortingRepository<Campaign,
 	public Page<Campaign> findByCategory(@Param("category")CampaignCategory category, Pageable Page);
 	public Page<Campaign> findByNameContainingOrDescriptionContainingAllIgnoreCase(@Param("keyword") String name,@Param("keyword") String description , Pageable Page);
 	public Campaign findByName(String name);
-	public Page<Campaign> findByIsApproved(@Param("approved")Boolean approved);
+	public Page<Campaign> findByIsApproved(@Param("approved")Boolean approved,Pageable Page);
 	
 }
