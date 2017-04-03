@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.hateoas.EntityLinks;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ import com.xpressstarter.util.CampaignSorter;
 import com.xpressstarter.util.Role;
 
 @Service
+@Scope(value="prototype")
 public class StatisticsService {
 
 	@Autowired
@@ -107,11 +109,9 @@ public class StatisticsService {
 		List<User> users =uRep.findByRole(Role.BENEFACTOR);
 		List<Statistical> values = new LinkedList<>();
 //		for (User user:users){
-//			double sum=0;
-//			sum+=dRep.findByUserId(user.getId()).parallelStream().mapToDouble(x -> x.getAmount()).sum();
-//			values.add(new StatisticalUserEntry(user,sum));
+//			values.add(new StatisticalUserEntry(user,user.getTotalDonated(),links));
 //		}
-		users.parallelStream().forEach((user)->{
+		users.stream().forEach((user)->{
 			
 			values.add(new StatisticalUserEntry(user,user.getTotalDonated(),links));
 		});
