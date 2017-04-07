@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityLinks;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +20,10 @@ public class StatisticsController {
 
 	@Autowired
 	StatisticsService statsService;
+	
+	@Autowired
+	EntityLinks links;
+	
 	
 	@GetMapping("/gettopcampaigns")
 	public List<Statistical> getTopCampaigns(@RequestParam("type") int type,@RequestParam("number") int number) throws IOException{

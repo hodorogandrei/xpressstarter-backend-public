@@ -97,7 +97,9 @@ public class MockDataController {
 					user.setRole(Role.BENEFICIARY);
 				}
 				uRep.save(user);
+				
 			}
+			System.out.println(mockUsers.size()+" users have been added!");
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -137,6 +139,7 @@ public class MockDataController {
 			Donation d = new Donation(u,100.00,LocalDateTime.now(),c,DonationStatus.OK);
 			d=dRep.save(d);
 		}
+		System.out.println(mockCampaigns.size()+" campaigns have been added");
 	}
 	
 	private void generateActivity(){

@@ -17,8 +17,8 @@ import com.xpressstarter.repository.LikeRepository;
 
 public class ActivityGeneratorRunner implements Runnable{
 	private static Random random;
-	private static final int MAX_LIKES_TO_GIVE=10;
-	private static final int MAX_DONATIONS_TO_GIVE=5;
+	private static final int MAX_LIKES_TO_GIVE=5;
+	private static final int MAX_DONATIONS_TO_GIVE=3;
 	private static final AtomicInteger count=new AtomicInteger(1);
 	private User user;
 	private int number;

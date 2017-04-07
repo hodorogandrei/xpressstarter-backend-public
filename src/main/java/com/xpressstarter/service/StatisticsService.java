@@ -9,20 +9,18 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.hateoas.EntityLinks;
 import org.springframework.stereotype.Service;
 
 import com.xpressstarter.entity.Campaign;
 import com.xpressstarter.entity.User;
-import com.xpressstarter.repository.CampaignRepository;
 import com.xpressstarter.repository.DonationRepository;
 import com.xpressstarter.repository.LikeRepository;
-import com.xpressstarter.repository.UserRepository;
 import com.xpressstarter.statistics.StatisticCampaignEntry;
 import com.xpressstarter.statistics.StatisticCategoryEntry;
 import com.xpressstarter.statistics.Statistical;
 import com.xpressstarter.statistics.StatisticalUserEntry;
+import com.xpressstarter.statistics.StatisticsInMemoryStorage;
 import com.xpressstarter.util.CampaignCategory;
 import com.xpressstarter.util.CampaignSorter;
 import com.xpressstarter.util.Role;
@@ -31,17 +29,20 @@ import com.xpressstarter.util.Role;
 @Scope(value="prototype")
 public class StatisticsService {
 
-	@Autowired
-	private CampaignRepository cRep;
-	
-	@Autowired
-	private UserRepository uRep;
-	
+//	@Autowired
+//	private CampaignRepository cRep;
+//	
+//	@Autowired
+//	private UserRepository uRep;
+//	
 	@Autowired
 	private DonationRepository dRep;
 	
 	@Autowired
 	private LikeRepository lRep;
+	
+	@Autowired
+	private StatisticsInMemoryStorage statisticsStorage;
 	
 	@Autowired
 	EntityLinks links;
@@ -96,7 +97,7 @@ public class StatisticsService {
 			double sum=0;
 			int donationCount = 0;
 			
-			for (Campaign campaign:cRep.findByCategory(category,new PageRequest(0,Integer.MAX_VALUE))){
+			for (Campaign campaign:statisticsStorage.getCampaignsByCategory(category)){
 				sum+=campaign.getCurrent();
 				donationCount+=dRep.countByCampaignId(campaign.getId());
 			}
@@ -106,7 +107,7 @@ public class StatisticsService {
 		return values;
 	}
 	public List<Statistical> getTopUsersByDonationSum(int number){
-		List<User> users =uRep.findByRole(Role.BENEFACTOR);
+		List<User> users =statisticsStorage.getUsersByRole(Role.BENEFACTOR);
 		List<Statistical> values = new LinkedList<>();
 //		for (User user:users){
 //			values.add(new StatisticalUserEntry(user,user.getTotalDonated(),links));
@@ -133,21 +134,21 @@ public class StatisticsService {
 	
 	private List<Statistical> getCampaignsWithDonationSum(){
 		List<Statistical> entries = new LinkedList<>();
-		for (Campaign campaign:cRep.findAll()){
+		for (Campaign campaign:statisticsStorage.getCampaigns()){
 			entries.add(new StatisticCampaignEntry(campaign, campaign.getCurrent(),links));
 		}
 		return entries;
 	}
 	private List<Statistical> getCampaignsWithDonationCount(){
 		List<Statistical> entries = new LinkedList<>();
-		for (Campaign campaign:cRep.findAll()){
+		for (Campaign campaign:statisticsStorage.getCampaigns()){
 			entries.add(new StatisticCampaignEntry(campaign, getDonationCountByCampaign(campaign),links));
 		}
 		return entries;
 	}
 	private List<Statistical> getCampaignsActivity(){
 		List<Statistical> entries = new LinkedList<>();
-		for (Campaign campaign:cRep.findAll()){
+		for (Campaign campaign:statisticsStorage.getCampaigns()){
 			entries.add(new StatisticCampaignEntry(campaign, getDonationCountByCampaign(campaign)+getLikesCountByCampaign(campaign),links));
 		}
 		return entries;
@@ -155,7 +156,7 @@ public class StatisticsService {
 	
 	private List<Statistical> getNearlyFoundedCampaigns(){
 		List<Statistical> entries = new LinkedList<>();
-		for (Campaign campaign:cRep.findAll()){
+		for (Campaign campaign:statisticsStorage.getCampaigns()){
 			if (campaign.calculatePercentage()<100){
 				entries.add(new StatisticCampaignEntry(campaign,campaign.calculatePercentage(),links));
 			}

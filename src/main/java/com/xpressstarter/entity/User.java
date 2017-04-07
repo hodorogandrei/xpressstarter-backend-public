@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xpressstarter.util.Role;
 
 
-public class User {
+public class User{
 
 	@Id
 	private String id;
