@@ -12,6 +12,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,6 +50,8 @@ public class MockDataController {
 	@Autowired
 	private LikeRepository lRep;
 	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	
 	@RequestMapping
 	public void loadMockData(){
@@ -59,7 +63,10 @@ public class MockDataController {
 		uRep.save(new User("Andrei","Dumitrescu","andrei@test.com","ksdhfisd",false,LocalDateTime.now(),Role.ADMIN));
 		uRep.save(new User("Andrei","Hodorog","andrei.hodorog@test.com","ksdhfisd",false,LocalDateTime.now(),Role.ADMIN));
 		loadMockDataFromJSON(); 
-		generateActivity();
+		Long start=System.currentTimeMillis();
+		generateActivity(cRep.findAll());
+		Long stop=System.currentTimeMillis();
+		logger.debug("Generating mock data took "+(stop-start)+" ms!");
 		for (Campaign campaign:cRep.findAll()){
 			recalculateLikesAndDonations(campaign);
 		}
@@ -142,10 +149,10 @@ public class MockDataController {
 		System.out.println(mockCampaigns.size()+" campaigns have been added");
 	}
 	
-	private void generateActivity(){
+	private void generateActivity(Iterable<Campaign> campaigns){
 		ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 		for (User user:uRep.findByRole(Role.BENEFACTOR)){
-			es.execute(new ActivityGeneratorRunner(user,cRep,lRep,dRep));
+			es.execute(new ActivityGeneratorRunner(user,cRep,lRep,dRep,campaigns));
 		}
 		es.shutdown();
 		try {
