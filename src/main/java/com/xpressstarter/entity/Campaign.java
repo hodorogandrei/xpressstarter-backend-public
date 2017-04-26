@@ -52,9 +52,9 @@ public class Campaign {
 	@DBRef
 	@NotNull
 	private User approvedBy;
-	@NotNull
+	
 	private List<String> pictures;
-	@NotNull
+	
 	private String mainPicture;
 	@NotNull
 	private Integer likeCount;

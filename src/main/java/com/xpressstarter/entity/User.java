@@ -38,7 +38,6 @@ public class User{
 	private LocalDateTime memberSince;
 	@NotNull
 	private Role role;
-	@NotNull
 	private String profilePicture;
 	@NotNull
 	private double totalDonated;

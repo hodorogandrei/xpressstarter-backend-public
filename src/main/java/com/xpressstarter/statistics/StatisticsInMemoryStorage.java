@@ -42,7 +42,7 @@ public class StatisticsInMemoryStorage {
 	private DonationRepository dRep;
 	
 	
-	@Scheduled(fixedDelay=300000)
+	//@Scheduled(fixedDelay=300000)
 	private void syncData(){
 		this.campaigns=new ArrayList<>();
 		for(Campaign campaign:this.cRep.findAll()){
@@ -54,7 +54,7 @@ public class StatisticsInMemoryStorage {
 		logger.info("Statistics have been refreshed!");
 		
 	}
-	@PostConstruct
+	//@PostConstruct
 	private void initialStart(){
 		logger.info("Warming up statistics cache");
 		syncData();

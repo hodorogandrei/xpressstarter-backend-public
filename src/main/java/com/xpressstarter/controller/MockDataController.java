@@ -66,7 +66,7 @@ public class MockDataController {
 		Long start=System.currentTimeMillis();
 		generateActivity(cRep.findAll());
 		Long stop=System.currentTimeMillis();
-		logger.debug("Generating mock data took "+(stop-start)+" ms!");
+		logger.info("Generating mock data took "+(stop-start)+" ms!");
 		for (Campaign campaign:cRep.findAll()){
 			recalculateLikesAndDonations(campaign);
 		}
@@ -156,7 +156,7 @@ public class MockDataController {
 		}
 		es.shutdown();
 		try {
-			es.awaitTermination(1, TimeUnit.HOURS);
+			es.awaitTermination(1, TimeUnit.MINUTES);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

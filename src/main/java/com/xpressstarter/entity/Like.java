@@ -26,6 +26,13 @@ public class Like {
 	public Like(){
 		
 	}
+	
+	public Like(User user, Campaign campaign) {
+		super();
+		this.user = user;
+		this.campaign = campaign;
+	}
+
 	public LocalDateTime getGivenOn() {
 		return givenOn;
 	}

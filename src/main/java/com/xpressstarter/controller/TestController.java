@@ -8,12 +8,9 @@ import org.springframework.hateoas.EntityLinks;
 import org.springframework.hateoas.Link;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.facebook.api.Facebook;
-import org.springframework.social.facebook.api.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xpressstarter.entity.Campaign;
 
 @RestController
@@ -44,10 +41,10 @@ public class TestController {
 	
 	@GetMapping("/getFBPrincipal")
 	public byte[] getPrincipal(){
-		String [] fields = { "id", "email",  "first_name", "last_name" };
-		User userProfile = facebook.fetchObject("me", User.class, fields);
+		//String [] fields = { "id", "email",  "first_name", "last_name" };
+		//User userProfile = facebook.fetchObject("me", User.class, fields);
 		
-		ObjectMapper mapper = new ObjectMapper();
+		//ObjectMapper mapper = new ObjectMapper();
 //		try {
 //			return mapper.writeValueAsString(userProfile);
 //		} catch (JsonProcessingException e) {
