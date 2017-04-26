@@ -1,10 +1,8 @@
 package com.xpressstarter;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.not;
-import static org.hamcrest.CoreMatchers.is;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDateTime;
@@ -28,14 +26,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.xpressstarter.entity.Campaign;
 import com.xpressstarter.entity.Donation;
-import com.xpressstarter.entity.Like;
 import com.xpressstarter.entity.User;
 import com.xpressstarter.repository.CampaignRepository;
 import com.xpressstarter.repository.DonationRepository;
-import com.xpressstarter.repository.LikeRepository;
 import com.xpressstarter.repository.UserRepository;
 import com.xpressstarter.util.CampaignCategory;
-import com.xpressstarter.util.DonationStatus;
 import com.xpressstarter.util.Role;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -50,8 +45,8 @@ private MockMvc mockMvc;
 	private CampaignRepository cRep;
 	@Autowired
 	private UserRepository uRep;
-	@Autowired
-	private LikeRepository lRep;
+//	@Autowired
+//	private LikeRepository lRep;
 	@Autowired
 	private DonationRepository dRep;
 	@Autowired
@@ -162,6 +157,42 @@ private MockMvc mockMvc;
 				
 	}
 
+	@Test
+	public void testDonationHandler() throws Exception{
+		LocalDateTime sentTime=LocalDateTime.of(2017,03,21,21,18);
+		User testUser=new User("Test","User","testDonationHandler@test.com","ksdhfisd",false,sentTime,Role.ADMIN);
+		testUser=uRep.save(testUser);
+		Campaign testCampaign = new Campaign("TestCampaignD", "This is a test Campaign", testUser, 250.0, 0.0,
+    			LocalDateTime.now(), LocalDateTime.now().plusDays(50), CampaignCategory.ARTS, true, testUser);
+		testCampaign.setApprovedBy(testUser);
+		testCampaign.setBeneficiary(testUser);
+		testCampaign.setLikeCount(0);
+		testCampaign.setIsApproved(true);
+		testCampaign=cRep.save(testCampaign);
+		Donation testDonation=new Donation();
+		testDonation.setAmount(100.0);
+		testDonation.setStatusOK();
+		String content=om.writeValueAsString(testDonation);
+		JSONObject jobj = new JSONObject(content);
+		jobj.remove("user");
+		jobj.remove("campaign");
+		jobj.put("user", links.linkToSingleResource(User.class,testUser.getId()).getHref());
+		jobj.put("campaign", links.linkToSingleResource(Campaign.class,testCampaign.getId()).getHref());
+		content=jobj.toString();
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/donations").contentType(MediaType.APPLICATION_JSON)
+		        .content(content)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(201));
+		
+		assertEquals(uRep.findByEmail("testDonationHandler@test.com").getTotalDonated(),100.0,0);
+		assertEquals(cRep.findByName("TestCampaignD").getCurrent(),100.0,100.0);
+		assertNotEquals(dRep.findByUserIdAndCampaignId(testUser.getId(), testCampaign.getId()), sentTime);
+		
+		uRep.delete(testUser);
+		dRep.delete(dRep.findByUserIdAndCampaignId(testUser.getId(), testCampaign.getId()));
+		cRep.delete(testCampaign.getId());
+				
+	}
 
 
 }
