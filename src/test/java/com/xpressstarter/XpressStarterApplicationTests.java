@@ -51,8 +51,6 @@ private MockMvc mockMvc;
 	private DonationRepository dRep;
 	@Autowired
 	private EntityLinks links;
-	
-	
 	private ObjectMapper om;	
 	@Before
 	public void setup() {
@@ -60,7 +58,6 @@ private MockMvc mockMvc;
     	this.om = new ObjectMapper();
     	this.om.registerModule(new JavaTimeModule());
     	this.om.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-//    	uRep.delete(uRep.findByEmail("test@test.com"));
 	}
 
 	@Test
@@ -78,7 +75,6 @@ private MockMvc mockMvc;
 	@Test
 	public void verifyUserPost() throws Exception {
 		User testUser = new User("Test","User","testUserPost@test.com","ksdhfisd",false,LocalDateTime.now(),Role.ADMIN);
-		System.out.println(om.writeValueAsString(testUser));
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/users").contentType(MediaType.APPLICATION_JSON)
 		        .content(om.writeValueAsString(testUser))
 				.accept(MediaType.APPLICATION_JSON))
@@ -92,9 +88,6 @@ private MockMvc mockMvc;
 		testUser=uRep.save(testUser);
 		Campaign testCampaign = new Campaign("TestCampaign", "This is a test Campaign", testUser, 250.0, 125.5,
     			LocalDateTime.now(), LocalDateTime.now().plusDays(50), CampaignCategory.ARTS, true, testUser);
-		
-		
-		testUser=uRep.findByEmail("test@test.com");
 		testCampaign.setApprovedBy(testUser);
 		testCampaign.setBeneficiary(testUser);
 		testCampaign.setLikeCount(0);
@@ -106,7 +99,6 @@ private MockMvc mockMvc;
 		jobj.put("beneficiary", links.linkToSingleResource(User.class,testUser.getId()).getHref());
 		jobj.put("approvedBy", links.linkToSingleResource(User.class,testUser.getId()).getHref());
 		content=jobj.toString();
-		System.out.println(content);
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/campaigns").contentType(MediaType.APPLICATION_JSON)
 		        .content(content)
 				.accept(MediaType.APPLICATION_JSON))
@@ -114,6 +106,7 @@ private MockMvc mockMvc;
 		cRep.delete(cRep.findByName("TestCampaign"));
 		uRep.delete(testUser);
 	}
+	
 
 
 }
