@@ -1,5 +1,10 @@
 package com.xpressstarter;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.not;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNotEquals;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDateTime;
@@ -106,7 +111,57 @@ private MockMvc mockMvc;
 		cRep.delete(cRep.findByName("TestCampaign"));
 		uRep.delete(testUser);
 	}
+	@Test
+	public void verifyDonationPost() throws Exception {
+		User testUser = new User("Test","User","testDonationPost@test.com","ksdhfisd",false,LocalDateTime.now(),Role.ADMIN);
+		testUser=uRep.save(testUser);
+		Campaign testCampaign = new Campaign("TestCampaignD", "This is a test Campaign", testUser, 250.0, 125.5,
+    			LocalDateTime.now(), LocalDateTime.now().plusDays(50), CampaignCategory.ARTS, true, testUser);
+		testCampaign.setApprovedBy(testUser);
+		testCampaign.setBeneficiary(testUser);
+		testCampaign.setLikeCount(0);
+		testCampaign.setIsApproved(true);
+		testCampaign=cRep.save(testCampaign);
+		Donation testDonation=new Donation();
+		testDonation.setAmount(100.0);
+		testDonation.setStatusOK();
+		String content=om.writeValueAsString(testDonation);
+		JSONObject jobj = new JSONObject(content);
+		jobj.remove("user");
+		jobj.remove("campaign");
+		jobj.put("user", links.linkToSingleResource(User.class,testUser.getId()).getHref());
+		jobj.put("campaign", links.linkToSingleResource(Campaign.class,testCampaign.getId()).getHref());
+		content=jobj.toString();
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/donations").contentType(MediaType.APPLICATION_JSON)
+		        .content(content)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(201));
+		cRep.delete(cRep.findByName("TestCampaignD"));
+		uRep.delete(testUser);
+		dRep.delete(dRep.findByUserIdAndCampaignId(testUser.getId(), testCampaign.getId()));
+	}
 	
+	@Test
+	public void testUserHandler() throws Exception{
+		LocalDateTime sentTime=LocalDateTime.of(2017,03,21,21,18);
+		User testUser=new User("Test","User","testUserHandler@test.com","ksdhfisd",false,LocalDateTime.of(2017,03,21,21,18),Role.ADMIN);
+		String content=om.writeValueAsString(testUser);
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/users").contentType(MediaType.APPLICATION_JSON)
+		        .content(content)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(201));
+		//test if member since is changed to current date rather than the one provided
+		assertNotEquals(uRep.findByEmail("testUserHandler@test.com").getMemberSince(),sentTime);
+		//test if the user is added again we get an error
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/users").contentType(MediaType.APPLICATION_JSON)
+		        .content(content)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(400));
+		uRep.delete(uRep.findByEmail("testUserHandler@test.com"));
+		
+				
+	}
+
 
 
 }

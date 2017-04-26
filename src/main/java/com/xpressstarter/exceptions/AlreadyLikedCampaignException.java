@@ -1,5 +1,9 @@
 package com.xpressstarter.exceptions;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(value=HttpStatus.BAD_REQUEST, reason="Campaign was already like by this user.")
 public class AlreadyLikedCampaignException extends RuntimeException {
 
 	/**
